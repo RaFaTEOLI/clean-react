@@ -6,6 +6,9 @@
   "repository": "git@github.com:RaFaTEOLI/clean-react.git",
   "author": "RaFaTEOLI <rafinha.tessarolo@hotmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.23",
