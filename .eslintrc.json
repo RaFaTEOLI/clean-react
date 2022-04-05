@@ -1,18 +1,18 @@
 {
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
+  // "settings": {
+  //   "react": {
+  //     "version": "detect"
+  //   }
+  // },
   "extends": [
-    "standard-with-typescript",
-    "plugin:react/recommended",
-    "plugin:cypress/recommended"
+    "standard-with-typescript"
+    // "plugin:react/recommended"
+    // "plugin:cypress/recommended"
   ],
-  "env": {
-    "cypress/globals": true
-  },
-  "plugins": ["react", "cypress"],
+  // "env": {
+  //   "cypress/globals": true
+  // },
+  // "plugins": ["react" "cypress"],
   "parserOptions": {
     "project": "./tsconfig-eslint.json"
   },
@@ -25,7 +25,11 @@
     "@typescript-eslint/no-namespace": "off",
     "no-redeclare": "off",
     "import/export": "off",
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
+    "semi": "off",
+    "@typescript-eslint/member-delimiter-style": "off",
+    "@typescript-eslint/camelcase": "off",
+    "space-before-function-paren": "off"
+    // "react/jsx-uses-react": "error",
+    // "react/jsx-uses-vars": "error"
   }
 }
