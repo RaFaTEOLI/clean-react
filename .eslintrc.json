@@ -16,7 +16,6 @@
   //   "cypress/globals": true
   // },
   "plugins": ["react", "@typescript-eslint" /*,"cypress"*/],
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig-eslint.json"
   },
