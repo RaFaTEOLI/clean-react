@@ -2,7 +2,7 @@
   "name": "clean-react",
   "version": "1.0.0",
   "description": "React App using Hooks, Typescript, TDD, Clean Architecture, Design Patterns and SOLID Principles",
-  "main": "index.js",
+  "main": "src/main/index.tsx",
   "repository": "git@github.com:RaFaTEOLI/clean-react.git",
   "author": "RaFaTEOLI <rafinha.tessarolo@hotmail.com>",
   "license": "MIT",
