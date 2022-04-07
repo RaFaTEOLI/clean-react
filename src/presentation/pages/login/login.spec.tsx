@@ -3,9 +3,12 @@ import { render } from '@testing-library/react';
 import Login from './login';
 
 describe('Login Component', () => {
-  test('should render login without error wrap', () => {
+  test('should start with initial state', () => {
     const { getByTestId } = render(<Login />);
     const erroWrap = getByTestId('error-wrap');
     expect(erroWrap.childElementCount).toBe(0);
+
+    const submitButton = getByTestId('submit') as HTMLButtonElement;
+    expect(submitButton.disabled).toBeTruthy();
   });
 });
