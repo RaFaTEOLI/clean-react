@@ -168,6 +168,7 @@ describe('Login Component', () => {
     await simulateValidSubmit(sut);
 
     expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken);
+    expect(history.location.pathname).toBe('/');
   });
 
   test('should go to signup page', () => {
