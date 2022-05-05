@@ -46,15 +46,16 @@ const simulateStatusForField = (sut: RenderResult, fieldName: string, validation
   expect(status.textContent).toBe(validationError ? '🔴' : '🟡');
 };
 
-const simulateValidSubmit = (
+const simulateValidSubmit = async (
   sut: RenderResult,
   email = faker.internet.email(),
   password = faker.internet.password()
-): void => {
+): Promise<void> => {
   populateEmailField(sut, email);
   populatePasswordField(sut, password);
-  const submitButton = sut.getByTestId('submit');
-  fireEvent.click(submitButton);
+  const form = sut.getByTestId('form');
+  fireEvent.submit(form);
+  await waitFor(() => form);
 };
 
 describe('Login Component', () => {
@@ -153,21 +154,21 @@ describe('Login Component', () => {
   //   jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error));
 
   //   await simulateValidSubmit(sut);
-  //   const mainError = sut.getByTestId('main-error');
-  //   expect(mainError.textContent).toBe(error.message);
 
   //   const errorWrap = sut.getByTestId('error-wrap');
   //   expect(errorWrap.childElementCount).toBe(1);
+  //   await waitFor(() => errorWrap);
+
+  //   const mainError = sut.getByTestId('main-error');
+  //   expect(mainError.textContent).toBe(error.message);
   // });
 
-  // test('should add accessToken to localStorage on success', async () => {
-  //   const { sut, authenticationSpy } = makeSut();
-  //   await simulateValidSubmit(sut);
+  test('should add accessToken to localStorage on success', async () => {
+    const { sut, authenticationSpy } = makeSut();
+    await simulateValidSubmit(sut);
 
-  //   expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken);
-
-  //   expect(history.location.pathname).toBe('/');
-  // });
+    expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken);
+  });
 
   test('should go to signup page', () => {
     const { sut } = makeSut();
