@@ -1,10 +1,12 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import faker from '@faker-js/faker';
 import 'jest-localstorage-mock';
 import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react';
 import Login from './login';
 import { ValidationStub, AuthenticationSpy } from '@/presentation/test';
-// import { InvalidCredentialsError } from '@/domain/errors';
+import { InvalidCredentialsError } from '@/domain/errors';
 
 type SutTypes = {
   sut: RenderResult;
@@ -15,11 +17,16 @@ type SutParams = {
   validationError: string;
 };
 
+const history = createMemoryHistory({ initialEntries: ['/login'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
   validationStub.errorMessage = params?.validationError;
-  const sut = render(<Login validation={validationStub} authentication={authenticationSpy} />);
+  const sut = render(
+    <Router navigator={history} location={history.location}>
+      <Login validation={validationStub} authentication={authenticationSpy} />
+    </Router>
+  );
   return { sut, authenticationSpy };
 };
 
@@ -144,18 +151,29 @@ describe('Login Component', () => {
   //   const { sut, authenticationSpy } = makeSut();
   //   const error = new InvalidCredentialsError();
   //   jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error));
-  //   simulateValidSubmit(sut);
-  //   const errorWrap = sut.getByTestId('error-wrap');
-  //   await waitFor(() => errorWrap);
+
+  //   await simulateValidSubmit(sut);
   //   const mainError = sut.getByTestId('main-error');
   //   expect(mainError.textContent).toBe(error.message);
+
+  //   const errorWrap = sut.getByTestId('error-wrap');
   //   expect(errorWrap.childElementCount).toBe(1);
   // });
 
   // test('should add accessToken to localStorage on success', async () => {
   //   const { sut, authenticationSpy } = makeSut();
-  //   simulateValidSubmit(sut);
-  //   await waitFor(() => sut.getByTestId('form'));
+  //   await simulateValidSubmit(sut);
+
   //   expect(localStorage.setItem).toHaveBeenCalledWith('accessToken', authenticationSpy.account.accessToken);
+
+  //   expect(history.location.pathname).toBe('/');
   // });
+
+  test('should go to signup page', () => {
+    const { sut } = makeSut();
+    const register = sut.getByTestId('signup');
+
+    fireEvent.click(register);
+    expect(history.location.pathname).toBe('/signup');
+  });
 });
