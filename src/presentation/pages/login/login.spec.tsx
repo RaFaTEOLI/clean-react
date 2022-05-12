@@ -164,14 +164,14 @@ describe('Login Component', () => {
   });
 
   // test('should present error if Authentication fails', async () => {
+  //   console.log('calling');
   //   const { sut, authenticationSpy } = makeSut();
   //   const error = new InvalidCredentialsError();
   //   jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error));
 
   //   await simulateValidSubmit(sut);
-
+  //   testElementText(sut, 'main-error', error.message);
   //   testErrorWrapChildCount(sut, 1);
-  //   testElementText(sut, 'main-error', error.message)
   // });
 
   test('should add accessToken to localStorage on success', async () => {
