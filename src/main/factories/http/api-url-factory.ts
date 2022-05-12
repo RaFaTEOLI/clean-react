@@ -1,6 +1,7 @@
 export const makeApiUrl = (path: string): string => {
+  const apiUrl = process.env.API_URL;
   if (path.startsWith('/')) {
-    return `http://fordevs.herokuapp.com/api${path}`;
+    return `${apiUrl}${path}`;
   }
-  return `http://fordevs.herokuapp.com/api/${path}`;
+  return `${apiUrl}/${path}`;
 };
