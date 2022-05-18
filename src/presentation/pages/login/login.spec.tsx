@@ -14,7 +14,8 @@ type SutTypes = {
 };
 
 type SutParams = {
-  validationError: string;
+  validationError?: string;
+  legacyRoot?: boolean;
 };
 
 const history = createMemoryHistory({ initialEntries: ['/login'] });
@@ -22,10 +23,12 @@ const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
   validationStub.errorMessage = params?.validationError;
+  const usesLegacyRoot = params?.legacyRoot ?? false;
   const sut = render(
     <Router navigator={history} location={history.location}>
       <Login validation={validationStub} authentication={authenticationSpy} />
-    </Router>
+    </Router>,
+    { legacyRoot: usesLegacyRoot }
   );
   return { sut, authenticationSpy };
 };
@@ -163,16 +166,15 @@ describe('Login Component', () => {
     expect(authenticationSpy.callsCount).toBe(0);
   });
 
-  // test('should present error if Authentication fails', async () => {
-  //   console.log('calling');
-  //   const { sut, authenticationSpy } = makeSut();
-  //   const error = new InvalidCredentialsError();
-  //   jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error));
+  test('should present error if Authentication fails', async () => {
+    const { sut, authenticationSpy } = makeSut({ legacyRoot: true });
+    const error = new InvalidCredentialsError();
+    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error));
 
-  //   await simulateValidSubmit(sut);
-  //   testElementText(sut, 'main-error', error.message);
-  //   testErrorWrapChildCount(sut, 1);
-  // });
+    await simulateValidSubmit(sut);
+    testElementText(sut, 'main-error', error.message);
+    testErrorWrapChildCount(sut, 1);
+  });
 
   test('should add accessToken to localStorage on success', async () => {
     const { sut, authenticationSpy } = makeSut();
