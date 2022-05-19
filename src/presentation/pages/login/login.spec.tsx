@@ -2,7 +2,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import faker from '@faker-js/faker';
-import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react';
+import { render, RenderResult, fireEvent, cleanup, waitFor, act } from '@testing-library/react';
 import { Login } from '@/presentation/pages';
 import { ValidationStub, AuthenticationSpy, SaveAccessTokenMock } from '@/presentation/test';
 import { InvalidCredentialsError } from '@/domain/errors';
@@ -179,6 +179,18 @@ describe('Login Component', () => {
     await simulateValidSubmit(sut);
     expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken);
     expect(history.location.pathname).toBe('/');
+  });
+
+  test('should present error if SaveAccessToken fails', async () => {
+    const { sut, saveAccessTokenMock } = makeSut({ legacyRoot: true });
+    const error = new InvalidCredentialsError();
+    await act(async () => {
+      jest.spyOn(saveAccessTokenMock, 'save').mockReturnValueOnce(Promise.reject(error));
+
+      await simulateValidSubmit(sut);
+    });
+    testElementText(sut, 'main-error', error.message);
+    testErrorWrapChildCount(sut, 1);
   });
 
   test('should go to signup page', () => {
