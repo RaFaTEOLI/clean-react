@@ -1,5 +1,5 @@
 import { HttpPostClient, HttpStatusCode } from '@/data/protocols/http';
-import { EmailAlreadyBeingUsedError } from '@/domain/errors';
+import { EmailAlreadyBeingUsedError, UnexpectedError } from '@/domain/errors';
 import { AccountModel } from '@/domain/models';
 import { AddAccount, AddAccountParams } from '@/domain/usecases';
 
@@ -15,10 +15,12 @@ export class RemoteAddAccount implements AddAccount {
       body: params
     });
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.success:
+        return null;
       case HttpStatusCode.forbidden:
         throw new EmailAlreadyBeingUsedError();
       default:
-        return null;
+        throw new UnexpectedError();
     }
   }
 }
