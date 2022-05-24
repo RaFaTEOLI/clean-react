@@ -24,12 +24,11 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   const saveAccessTokenMock = new SaveAccessTokenMock();
   validationStub.errorMessage = params?.validationError;
-  const usesLegacyRoot = params?.legacyRoot ?? false;
   const sut = render(
     <Router navigator={history} location={history.location}>
       <Login validation={validationStub} authentication={authenticationSpy} saveAccessToken={saveAccessTokenMock} />
     </Router>,
-    { legacyRoot: usesLegacyRoot }
+    { legacyRoot: params?.legacyRoot ?? false }
   );
   return { sut, authenticationSpy, saveAccessTokenMock };
 };
@@ -136,7 +135,7 @@ describe('Login Component', () => {
   test('should present error if Authentication fails', async () => {
     const { sut, authenticationSpy } = makeSut({ legacyRoot: true });
     const error = new InvalidCredentialsError();
-    jest.spyOn(authenticationSpy, 'auth').mockReturnValueOnce(Promise.reject(error));
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error);
 
     await simulateValidSubmit(sut);
     testElementText(sut, 'main-error', error.message);
