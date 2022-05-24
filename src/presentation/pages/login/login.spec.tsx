@@ -148,7 +148,7 @@ describe('Login Component', () => {
     const { sut, saveAccessTokenMock } = makeSut({ legacyRoot: true });
     const error = new InvalidCredentialsError();
     await act(async () => {
-      jest.spyOn(saveAccessTokenMock, 'save').mockReturnValueOnce(Promise.reject(error));
+      jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error);
 
       await simulateValidSubmit(sut);
     });
