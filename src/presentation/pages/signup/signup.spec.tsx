@@ -1,13 +1,16 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
 import { cleanup, fireEvent, render, RenderResult, waitFor } from '@testing-library/react';
 import faker from '@faker-js/faker';
 import SignUp from './signup';
-import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test';
+import { AddAccountSpy, Helper, SaveAccessTokenMock, ValidationStub } from '@/presentation/test';
 import { EmailAlreadyBeingUsedError } from '@/domain/errors';
+import { createMemoryHistory } from 'history';
 
 type SutTypes = {
   sut: RenderResult;
   addAccountSpy: AddAccountSpy;
+  saveAccessTokenMock: SaveAccessTokenMock;
 };
 
 type SutParams = {
@@ -15,14 +18,21 @@ type SutParams = {
   legacyRoot?: boolean;
 };
 
+const history = createMemoryHistory({ initialEntries: ['/signup'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const addAccountSpy = new AddAccountSpy();
+  const saveAccessTokenMock = new SaveAccessTokenMock();
   validationStub.errorMessage = params?.validationError;
-  const sut = render(<SignUp validation={validationStub} addAccount={addAccountSpy} />, {
-    legacyRoot: params?.legacyRoot ?? false
-  });
-  return { sut, addAccountSpy };
+  const sut = render(
+    <Router navigator={history} location={history.location}>
+      <SignUp validation={validationStub} addAccount={addAccountSpy} saveAccessToken={saveAccessTokenMock} />
+    </Router>,
+    {
+      legacyRoot: params?.legacyRoot ?? false
+    }
+  );
+  return { sut, addAccountSpy, saveAccessTokenMock };
 };
 
 const simulateValidSubmit = async (
@@ -159,5 +169,12 @@ describe('SignUp Component', () => {
     await simulateValidSubmit(sut);
     Helper.testElementText(sut, 'main-error', error.message);
     Helper.testChildCount(sut, 'error-wrap', 1);
+  });
+
+  test('should call SaveAccessToken on success', async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    await simulateValidSubmit(sut);
+    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken);
+    expect(history.location.pathname).toBe('/');
   });
 });
