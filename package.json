@@ -12,9 +12,11 @@
     "test:watch": "yarn test --watchAll",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
+    "test:cypress": "cypress open",
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^5.11.1",
     "@faker-js/faker": "^6.1.2",
     "@testing-library/react": "^13.2.0",
     "@types/jest": "^27.4.1",
@@ -26,9 +28,11 @@
     "@typescript-eslint/parser": "^5.18.0",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
+    "cypress": "^9.7.0",
     "dotenv-webpack": "^7.1.0",
     "eslint": "^8.12.0",
     "eslint-config-standard-with-typescript": "11",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
