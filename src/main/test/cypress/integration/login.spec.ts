@@ -37,4 +37,11 @@ describe('Login', () => {
     cy.getByTestId('submit').should('not.have.attr', 'disabled');
     cy.getByTestId('error-wrap').should('not.have.descendants');
   });
+
+  it('should show UnexpectedError on 400', () => {
+    cy.getByTestId('email').focus().type(faker.internet.email());
+    cy.getByTestId('password').focus().type(faker.datatype.string(5));
+    cy.getByTestId('submit').click();
+    cy.getByTestId('error-wrap').should('contain.text', 'Something went wrong! Try again later');
+  });
 });
