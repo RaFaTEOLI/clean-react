@@ -1,5 +1,8 @@
 export const makeApiUrl = (path: string): string => {
-  const apiUrl = process.env.API_URL;
+  let apiUrl = process.env.API_URL;
+  if (!apiUrl) {
+    apiUrl = 'http://localhost';
+  }
   if (path.startsWith('/')) {
     return `${apiUrl}${path}`;
   }

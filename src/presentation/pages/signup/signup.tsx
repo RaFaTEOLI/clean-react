@@ -24,8 +24,8 @@ const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
     passwordConfirmation: '',
     nameError: '',
     emailError: '',
-    passwordError: 'Campo obrigatorio',
-    passwordConfirmationError: 'Campo obrigatorio',
+    passwordError: 'Required field',
+    passwordConfirmationError: 'Required field',
     mainError: ''
   });
 

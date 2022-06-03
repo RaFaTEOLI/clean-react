@@ -18,9 +18,10 @@ const Input: React.FC<Props> = (props: Props) => {
     });
   };
   return (
-    <div className={Styles.inputWrap}>
+    <div data-testid={`${props.name}-wrap`} data-status={error ? 'invalid' : 'valid'} className={Styles.inputWrap}>
       <input
         ref={inputRef}
+        title={error}
         {...props}
         placeholder=" "
         data-testid={props.name}
@@ -31,15 +32,14 @@ const Input: React.FC<Props> = (props: Props) => {
         onChange={handleChange}
       />
       <label
+        title={error}
+        data-testid={`${props.name}-label`}
         onClick={() => {
           inputRef.current.focus();
         }}
       >
         {props.placeholder}
       </label>
-      <span data-testid={`${props.name}-status`} title={error || 'Tudo certo!'} className={Styles.status}>
-        {error ? '🔴' : '🟡'}
-      </span>
     </div>
   );
 };

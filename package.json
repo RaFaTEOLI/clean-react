@@ -1,6 +1,6 @@
 {
   "name": "clean-react",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "React App using Hooks, Typescript, TDD, Clean Architecture, Design Patterns and SOLID Principles",
   "main": "src/main/index.tsx",
   "repository": "git@github.com:RaFaTEOLI/clean-react.git",
@@ -18,6 +18,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.11.1",
     "@faker-js/faker": "^6.1.2",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.23",
