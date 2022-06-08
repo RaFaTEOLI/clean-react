@@ -4,6 +4,7 @@ import faker from '@faker-js/faker';
 import { HttpStatusCode } from '@/data/protocols/http';
 import { UnexpectedError } from '@/domain/errors';
 import { SurveyModel } from '@/domain/models';
+import { mockSurveyListModel } from '@/domain/test';
 
 type SutTypes = {
   sut: RemoteLoadSurveyList;
@@ -23,34 +24,45 @@ describe('RemoteLoadSurveyList', () => {
   test('should call HttpGetClient with correct URL', async () => {
     const url = faker.internet.url();
     const { sut, httpGetClientSpy } = makeSut(url);
-    await sut.loadAll();
+    await sut.all();
     expect(httpGetClientSpy.url).toBe(url);
   });
 
-  test('Should throw UnexpectedError if HttpGetClient returns 403', async () => {
+  test('should throw UnexpectedError if HttpGetClient returns 403', async () => {
     const { sut, httpGetClientSpy } = makeSut();
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
     };
-    const promise = sut.loadAll();
+    const promise = sut.all();
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('Should throw UnexpectedError if HttpGetClient returns 404', async () => {
+  test('should throw UnexpectedError if HttpGetClient returns 404', async () => {
     const { sut, httpGetClientSpy } = makeSut();
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     };
-    const promise = sut.loadAll();
+    const promise = sut.all();
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('Should throw UnexpectedError if HttpGetClient returns 500', async () => {
+  test('should throw UnexpectedError if HttpGetClient returns 500', async () => {
     const { sut, httpGetClientSpy } = makeSut();
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     };
-    const promise = sut.loadAll();
+    const promise = sut.all();
     await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
+  test('should return a list of SurveyModels if HttpGetClient returns 200', async () => {
+    const { sut, httpGetClientSpy } = makeSut();
+    const httpResult = mockSurveyListModel();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.success,
+      body: httpResult
+    };
+    const surveyList = await sut.all();
+    expect(surveyList).toEqual(httpResult);
   });
 });
