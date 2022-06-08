@@ -1,20 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpPostClient, HttpPostParams, HttpResponse, HttpStatusCode } from '../protocols/http';
 import faker from '@faker-js/faker';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const mockPostRequest = (): HttpPostParams<any> => ({
+export const mockPostRequest = (): HttpPostParams => ({
   url: faker.internet.url(),
   body: faker.datatype.json()
 });
 
-export class HttpPostClientSpy<T, R> implements HttpPostClient<T, R> {
+export class HttpPostClientSpy<R> implements HttpPostClient<R> {
   url?: string;
-  body?: T;
+  body?: any;
   response: HttpResponse<R> = {
     statusCode: HttpStatusCode.success
   };
 
-  async post(params: HttpPostParams<T>): Promise<HttpResponse<R>> {
+  async post(params: HttpPostParams): Promise<HttpResponse<R>> {
     this.url = params.url;
     this.body = params.body;
     return Promise.resolve(this.response);

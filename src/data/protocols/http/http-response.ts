@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export enum HttpStatusCode {
   success = 200,
   created = 201,
@@ -9,8 +10,7 @@ export enum HttpStatusCode {
   serverError = 500
 }
 
-export type HttpResponse<T> = {
+export type HttpResponse<T = any> = {
   statusCode: HttpStatusCode;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: T;
 };
