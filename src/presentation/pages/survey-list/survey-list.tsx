@@ -20,6 +20,9 @@ const SurveyList: React.FC = () => {
         <ul>
           <li>
             <div className={Styles.surveyContent}>
+              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
+                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
+              </div>
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -31,6 +34,9 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
+              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
+                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
+              </div>
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -42,6 +48,9 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
+              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
+                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
+              </div>
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -53,6 +62,9 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
+              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
+                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
+              </div>
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -64,6 +76,9 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
+              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
+                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
+              </div>
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
