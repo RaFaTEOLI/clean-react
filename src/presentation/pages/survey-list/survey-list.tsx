@@ -1,28 +1,17 @@
-import { Footer, Logo } from '@/presentation/components';
+import { Header, Footer, Icon, IconName } from '@/presentation/components';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Styles from './survey-list-styles.scss';
 
 const SurveyList: React.FC = () => {
   return (
     <div className={Styles.surveyListWrap}>
-      <header className={Styles.headerWrap}>
-        <div className={Styles.headerContent}>
-          <Logo />
-          <div className={Styles.logoutWrap}>
-            <span>Rafael</span>
-            <Link to="/">Sair</Link>
-          </div>
-        </div>
-      </header>
+      <Header />
       <div className={Styles.contentWrap}>
         <h2>Surveys</h2>
         <ul>
           <li>
             <div className={Styles.surveyContent}>
-              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
-                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
-              </div>
+              <Icon className={Styles.iconWrap} iconName={IconName.thumbDown} />
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -34,9 +23,7 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
-              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
-                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
-              </div>
+              <Icon className={Styles.iconWrap} iconName={IconName.thumbDown} />
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -48,9 +35,7 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
-              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
-                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
-              </div>
+              <Icon className={Styles.iconWrap} iconName={IconName.thumbDown} />
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -62,9 +47,7 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
-              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
-                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
-              </div>
+              <Icon className={Styles.iconWrap} iconName={IconName.thumbDown} />
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
@@ -76,9 +59,7 @@ const SurveyList: React.FC = () => {
           </li>
           <li>
             <div className={Styles.surveyContent}>
-              <div className={[Styles.iconWrap, Styles.green].join(' ')}>
-                <img className={Styles.icon} src="/assets/icon-thumb-up.png" />
-              </div>
+              <Icon className={Styles.iconWrap} iconName={IconName.thumbDown} />
               <time>
                 <span className={Styles.day}>22</span>
                 <span className={Styles.month}>03</span>
