@@ -168,7 +168,7 @@ describe('SignUp Component', () => {
     expect(screen.getByTestId('error-wrap').children).toHaveLength(1);
   });
 
-  test('should call SaveAccessToken on success', async () => {
+  test('should call UpdateCurrentAccount on success', async () => {
     const { addAccountSpy, updateCurrentAccountMock } = makeSut();
     await simulateValidSubmit();
     expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account);

@@ -28,12 +28,14 @@ describe('LocalUpdateCurrentAccount', () => {
 
   test('should throw if SetStorage throws', async () => {
     const { sut, setStorageMock } = makeSut();
-    jest.spyOn(setStorageMock, 'set').mockRejectedValueOnce(new Error());
+    jest.spyOn(setStorageMock, 'set').mockImplementationOnce(() => {
+      throw new Error();
+    });
     const promise = sut.save(mockAccountModel());
     await expect(promise).rejects.toThrow(new Error());
   });
 
-  test('should throw if accessToken is falsy', async () => {
+  test('should throw if account is falsy', async () => {
     const { sut } = makeSut();
     const promise = sut.save(undefined);
     await expect(promise).rejects.toThrow(new UnexpectedError());
