@@ -4,12 +4,12 @@ import { createMemoryHistory } from 'history';
 import faker from '@faker-js/faker';
 import { render, fireEvent, cleanup, waitFor, screen } from '@testing-library/react';
 import { Login } from '@/presentation/pages';
-import { ValidationStub, AuthenticationSpy, SaveAccessTokenMock, Helper } from '@/presentation/test';
+import { ValidationStub, AuthenticationSpy, UpdateCurrentAccountMock, Helper } from '@/presentation/test';
 import { InvalidCredentialsError } from '@/domain/errors';
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy;
-  saveAccessTokenMock: SaveAccessTokenMock;
+  updateCurrentAccountMock: UpdateCurrentAccountMock;
 };
 
 type SutParams = {
@@ -21,15 +21,19 @@ const history = createMemoryHistory({ initialEntries: ['/login'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
-  const saveAccessTokenMock = new SaveAccessTokenMock();
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
     <Router navigator={history} location={history.location}>
-      <Login validation={validationStub} authentication={authenticationSpy} saveAccessToken={saveAccessTokenMock} />
+      <Login
+        validation={validationStub}
+        authentication={authenticationSpy}
+        updateCurrentAccount={updateCurrentAccountMock}
+      />
     </Router>,
     { legacyRoot: params?.legacyRoot ?? false }
   );
-  return { authenticationSpy, saveAccessTokenMock };
+  return { authenticationSpy, updateCurrentAccountMock };
 };
 
 const simulateValidSubmit = async (email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
@@ -137,9 +141,9 @@ describe('Login Component', () => {
   });
 
   test('should call SaveAccessToken on success', async () => {
-    const { authenticationSpy, saveAccessTokenMock } = makeSut();
+    const { authenticationSpy, updateCurrentAccountMock } = makeSut();
     await simulateValidSubmit();
-    expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken);
+    expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account);
     expect(history.location.pathname).toBe('/');
   });
 

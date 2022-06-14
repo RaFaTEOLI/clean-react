@@ -93,7 +93,7 @@ describe('Login', () => {
     cy.getByTestId('spinner').should('not.exist');
 
     FormHelper.testUrl('/');
-    FormHelper.testLocalStorageItem('accessToken');
+    FormHelper.testLocalStorageItem('account');
   });
 
   it('should prevent multiple submits', () => {

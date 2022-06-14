@@ -11,4 +11,4 @@ export const mockOk = (): void =>
     name: faker.name.findName()
   });
 
-export const mockInvalidData = (): void => Helper.mockOk(/login/, 'POST', { invalid: faker.random.uuid() });
+export const mockInvalidData = (): void => Helper.mockOk(/login/, 'POST', { invalid: faker.datatype.uuid() });

@@ -3,13 +3,13 @@ import { Router } from 'react-router-dom';
 import { cleanup, fireEvent, render, waitFor, screen } from '@testing-library/react';
 import faker from '@faker-js/faker';
 import SignUp from './signup';
-import { AddAccountSpy, Helper, SaveAccessTokenMock, ValidationStub } from '@/presentation/test';
+import { AddAccountSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/presentation/test';
 import { EmailAlreadyBeingUsedError } from '@/domain/errors';
 import { createMemoryHistory } from 'history';
 
 type SutTypes = {
   addAccountSpy: AddAccountSpy;
-  saveAccessTokenMock: SaveAccessTokenMock;
+  updateCurrentAccountMock: UpdateCurrentAccountMock;
 };
 
 type SutParams = {
@@ -21,17 +21,17 @@ const history = createMemoryHistory({ initialEntries: ['/signup'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const addAccountSpy = new AddAccountSpy();
-  const saveAccessTokenMock = new SaveAccessTokenMock();
+  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
     <Router navigator={history} location={history.location}>
-      <SignUp validation={validationStub} addAccount={addAccountSpy} saveAccessToken={saveAccessTokenMock} />
+      <SignUp validation={validationStub} addAccount={addAccountSpy} updateCurrentAccount={updateCurrentAccountMock} />
     </Router>,
     {
       legacyRoot: params?.legacyRoot ?? false
     }
   );
-  return { addAccountSpy, saveAccessTokenMock };
+  return { addAccountSpy, updateCurrentAccountMock };
 };
 
 const simulateValidSubmit = async (
@@ -169,9 +169,9 @@ describe('SignUp Component', () => {
   });
 
   test('should call SaveAccessToken on success', async () => {
-    const { addAccountSpy, saveAccessTokenMock } = makeSut();
+    const { addAccountSpy, updateCurrentAccountMock } = makeSut();
     await simulateValidSubmit();
-    expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken);
+    expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account);
     expect(history.location.pathname).toBe('/');
   });
 
