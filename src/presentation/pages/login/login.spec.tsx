@@ -2,14 +2,16 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import faker from '@faker-js/faker';
+import { ApiContext } from '@/presentation/contexts';
 import { render, fireEvent, cleanup, waitFor, screen } from '@testing-library/react';
 import { Login } from '@/presentation/pages';
-import { ValidationStub, AuthenticationSpy, UpdateCurrentAccountMock, Helper } from '@/presentation/test';
+import { ValidationStub, AuthenticationSpy, Helper } from '@/presentation/test';
 import { InvalidCredentialsError } from '@/domain/errors';
+import { AccountModel } from '@/domain/models';
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy;
-  updateCurrentAccountMock: UpdateCurrentAccountMock;
+  setCurrentAccountMock: (account: AccountModel) => void;
 };
 
 type SutParams = {
@@ -21,19 +23,17 @@ const history = createMemoryHistory({ initialEntries: ['/login'] });
 const makeSut = (params?: SutParams): SutTypes => {
   const validationStub = new ValidationStub();
   const authenticationSpy = new AuthenticationSpy();
-  const updateCurrentAccountMock = new UpdateCurrentAccountMock();
+  const setCurrentAccountMock = jest.fn();
   validationStub.errorMessage = params?.validationError;
   const sut = render(
-    <Router navigator={history} location={history.location}>
-      <Login
-        validation={validationStub}
-        authentication={authenticationSpy}
-        updateCurrentAccount={updateCurrentAccountMock}
-      />
-    </Router>,
+    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+      <Router navigator={history} location={history.location}>
+        <Login validation={validationStub} authentication={authenticationSpy} />
+      </Router>
+    </ApiContext.Provider>,
     { legacyRoot: params?.legacyRoot ?? false }
   );
-  return { authenticationSpy, updateCurrentAccountMock };
+  return { authenticationSpy, setCurrentAccountMock };
 };
 
 const simulateValidSubmit = async (email = faker.internet.email(), password = faker.internet.password()): Promise<void> => {
@@ -141,9 +141,9 @@ describe('Login Component', () => {
   });
 
   test('should call UpdateCurrentAccount on success', async () => {
-    const { authenticationSpy, updateCurrentAccountMock } = makeSut();
+    const { authenticationSpy, setCurrentAccountMock } = makeSut();
     await simulateValidSubmit();
-    expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account);
+    expect(setCurrentAccountMock).toHaveBeenCalledWith(authenticationSpy.account);
     expect(history.location.pathname).toBe('/');
   });
 
