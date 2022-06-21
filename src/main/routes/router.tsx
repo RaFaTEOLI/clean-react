@@ -3,11 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoginFactory, SignUpFactory } from '@/main/factories/pages/';
 import { ApiContext } from '@/presentation/contexts';
 import SurveyList from '@/presentation/pages/survey-list/survey-list';
-import { setCurrentAccountAdapter } from '../adapters/current-account-adapter';
+import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '../adapters/current-account-adapter';
 
 const Router: React.FC = () => {
   return (
-    <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountAdapter }}>
+    <ApiContext.Provider
+      value={{ setCurrentAccount: setCurrentAccountAdapter, getCurrentAccount: getCurrentAccountAdapter }}
+    >
       <BrowserRouter>
         <Routes>
           {/* <Route path="/" element={<h1>Dashboard</h1>} /> */}
