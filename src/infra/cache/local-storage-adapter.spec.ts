@@ -23,7 +23,7 @@ describe('LocalStorageAdapter', () => {
     const value = faker.datatype.json();
     const getItemSpy = jest.spyOn(localStorage, 'getItem').mockReturnValueOnce(value);
     const obj = sut.get(key);
-    expect(obj).toEqual(value);
+    expect(obj).toEqual(JSON.parse(value));
     expect(getItemSpy).toHaveBeenCalledWith(key);
   });
 });
