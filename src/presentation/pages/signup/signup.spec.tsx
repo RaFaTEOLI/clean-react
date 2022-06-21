@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
-import { cleanup, fireEvent, render, waitFor, screen } from '@testing-library/react';
+import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 import faker from '@faker-js/faker';
 import { ApiContext } from '@/presentation/contexts';
 import SignUp from './signup';
@@ -25,7 +25,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const addAccountSpy = new AddAccountSpy();
   const setCurrentAccountMock = jest.fn();
   validationStub.errorMessage = params?.validationError;
-  const sut = render(
+  render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
       <Router navigator={history} location={history.location}>
         <SignUp validation={validationStub} addAccount={addAccountSpy} />
@@ -54,8 +54,6 @@ const simulateValidSubmit = async (
 };
 
 describe('SignUp Component', () => {
-  afterEach(cleanup);
-
   test('should start with initial state', () => {
     const validationError = faker.random.words();
     makeSut({ validationError });

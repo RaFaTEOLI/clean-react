@@ -3,7 +3,7 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import faker from '@faker-js/faker';
 import { ApiContext } from '@/presentation/contexts';
-import { render, fireEvent, cleanup, waitFor, screen } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { Login } from '@/presentation/pages';
 import { ValidationStub, AuthenticationSpy, Helper } from '@/presentation/test';
 import { InvalidCredentialsError } from '@/domain/errors';
@@ -25,7 +25,7 @@ const makeSut = (params?: SutParams): SutTypes => {
   const authenticationSpy = new AuthenticationSpy();
   const setCurrentAccountMock = jest.fn();
   validationStub.errorMessage = params?.validationError;
-  const sut = render(
+  render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
       <Router navigator={history} location={history.location}>
         <Login validation={validationStub} authentication={authenticationSpy} />
@@ -46,8 +46,6 @@ const simulateValidSubmit = async (email = faker.internet.email(), password = fa
 };
 
 describe('Login Component', () => {
-  afterEach(cleanup);
-
   it('should not render spinner and error on start', () => {
     const validationError = faker.random.words();
     makeSut({ validationError });
