@@ -6,6 +6,7 @@ import { createMemoryHistory } from 'history';
 import { LoadSurveyList } from '@/domain/usecases';
 import { mockSurveyListModel } from '@/domain/test';
 import { SurveyModel } from '@/domain/models';
+import { UnexpectedError } from '@/domain/errors';
 
 class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0;
@@ -23,8 +24,7 @@ type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy;
 };
 
-const makeSut = (legacyRoot = false): SutTypes => {
-  const loadSurveyListSpy = new LoadSurveyListSpy();
+const makeSut = (legacyRoot = false, loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   render(
     <Router navigator={history} location={history.location}>
       <SurveyList loadSurveyList={loadSurveyListSpy} />
@@ -40,6 +40,7 @@ describe('SurveyList Component', () => {
     const surveyList = screen.getByTestId('survey-list');
 
     expect(surveyList.querySelectorAll('li:empty')).toHaveLength(4);
+    expect(screen.queryByTestId('error')).not.toBeInTheDocument();
     await waitFor(() => surveyList);
   });
 
@@ -54,5 +55,17 @@ describe('SurveyList Component', () => {
     const surveyList = await screen.findByTestId('survey-list');
     await waitFor(() => surveyList);
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(3);
+    expect(screen.queryByTestId('error')).not.toBeInTheDocument();
+  });
+
+  test('should render error on failure', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy();
+    const error = new UnexpectedError();
+    jest.spyOn(loadSurveyListSpy, 'all').mockRejectedValueOnce(error);
+    makeSut(true, loadSurveyListSpy);
+    await waitFor(() => screen.getByTestId('error'));
+    expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument();
+    const errorWrap = await screen.findByTestId('error');
+    expect(errorWrap).toHaveTextContent(error.message);
   });
 });
