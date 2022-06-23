@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { SurveyList } from '@/presentation/pages';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -67,5 +67,15 @@ describe('SurveyList Component', () => {
     expect(screen.queryByTestId('survey-list')).not.toBeInTheDocument();
     const errorWrap = await screen.findByTestId('error');
     expect(errorWrap).toHaveTextContent(error.message);
+  });
+
+  test('should call LoadSurveyList on reload', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy();
+    jest.spyOn(loadSurveyListSpy, 'all').mockRejectedValueOnce(new UnexpectedError());
+    makeSut(true, loadSurveyListSpy);
+    await waitFor(() => screen.getByTestId('error'));
+    fireEvent.click(screen.getByTestId('reload'));
+    expect(loadSurveyListSpy.callsCount).toBe(1);
+    await waitFor(() => screen.getByRole('heading'));
   });
 });
