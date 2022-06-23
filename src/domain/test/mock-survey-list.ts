@@ -1,4 +1,5 @@
 import { SurveyModel } from '../models';
+import { LoadSurveyList } from '@/domain/usecases';
 import faker from '@faker-js/faker';
 
 export const mockSurveyModel = (): SurveyModel => ({
@@ -16,5 +17,15 @@ export const mockSurveyModel = (): SurveyModel => ({
   didAnswer: faker.datatype.boolean(),
   date: faker.date.recent()
 });
+
+export class LoadSurveyListSpy implements LoadSurveyList {
+  callsCount = 0;
+  surveys = mockSurveyListModel();
+
+  async all(): Promise<SurveyModel[]> {
+    this.callsCount++;
+    return Promise.resolve(this.surveys);
+  }
+}
 
 export const mockSurveyListModel = (): SurveyModel[] => [mockSurveyModel(), mockSurveyModel(), mockSurveyModel()];
