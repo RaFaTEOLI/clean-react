@@ -4,7 +4,7 @@ import faker from '@faker-js/faker';
 
 export class GetStorageSpy implements GetStorage {
   key: string;
-  value = faker.random.objectElement();
+  value: any = faker.datatype.json();
 
   get(key: string): any {
     this.key = key;
