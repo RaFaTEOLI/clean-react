@@ -3,13 +3,18 @@ import { UnexpectedError } from '@/domain/errors';
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list';
 
 export class RemoteLoadSurveyList implements LoadSurveyList {
-  constructor(private readonly url: string, private readonly httpGetClient: HttpGetClient<LoadSurveyList.Model[]>) {}
+  constructor(private readonly url: string, private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyList.Model[]>) {}
 
   async all(): Promise<LoadSurveyList.Model[]> {
     const httpResponse = await this.httpGetClient.get({ url: this.url });
+    const remoteSurveys = httpResponse.body || [];
     switch (httpResponse.statusCode) {
       case HttpStatusCode.success:
-        return httpResponse.body;
+        return remoteSurveys.map(remoteSurvey =>
+          Object.assign(remoteSurvey, {
+            date: new Date(remoteSurvey.date)
+          })
+        );
       case HttpStatusCode.noContent:
         return [];
       default:
@@ -19,5 +24,10 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
 }
 
 export namespace RemoteLoadSurveyList {
-  export type Model = LoadSurveyList.Model;
+  export type Model = {
+    id: string;
+    question: string;
+    date: string;
+    didAnswer: boolean;
+  };
 }
