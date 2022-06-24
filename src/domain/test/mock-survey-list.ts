@@ -8,6 +8,8 @@ export const mockSurveyModel = (): LoadSurveyList.Model => ({
   date: faker.date.recent()
 });
 
+export const mockSurveyListModel = (): LoadSurveyList.Model[] => [mockSurveyModel(), mockSurveyModel(), mockSurveyModel()];
+
 export class LoadSurveyListSpy implements LoadSurveyList {
   callsCount = 0;
   surveys = mockSurveyListModel();
@@ -17,5 +19,3 @@ export class LoadSurveyListSpy implements LoadSurveyList {
     return Promise.resolve(this.surveys);
   }
 }
-
-export const mockSurveyListModel = (): LoadSurveyList.Model[] => [mockSurveyModel(), mockSurveyModel(), mockSurveyModel()];
