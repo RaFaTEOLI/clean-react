@@ -3,16 +3,15 @@ import { RemoteLoadSurveyList } from './remote-load-survey-list';
 import faker from '@faker-js/faker';
 import { HttpStatusCode } from '@/data/protocols/http';
 import { UnexpectedError } from '@/domain/errors';
-import { SurveyModel } from '@/domain/models';
 import { mockSurveyListModel } from '@/domain/test';
 
 type SutTypes = {
   sut: RemoteLoadSurveyList;
-  httpGetClientSpy: HttpGetClientSpy<SurveyModel[]>;
+  httpGetClientSpy: HttpGetClientSpy<RemoteLoadSurveyList.Model[]>;
 };
 
 const makeSut = (url = faker.internet.url()): SutTypes => {
-  const httpGetClientSpy = new HttpGetClientSpy<SurveyModel[]>();
+  const httpGetClientSpy = new HttpGetClientSpy<RemoteLoadSurveyList.Model[]>();
   const sut = new RemoteLoadSurveyList(url, httpGetClientSpy);
   return {
     sut,
@@ -66,7 +65,7 @@ describe('RemoteLoadSurveyList', () => {
     expect(surveyList).toEqual(httpResult);
   });
 
-  test('should return an empty list of SurveyModels if HttpGetClient returns 204', async () => {
+  test('should return an empty list of LoadSurveyList.Model if HttpGetClient returns 204', async () => {
     const { sut, httpGetClientSpy } = makeSut();
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.noContent

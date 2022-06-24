@@ -4,7 +4,6 @@ import { createMemoryHistory, MemoryHistory } from 'history';
 import { ApiContext } from '@/presentation/contexts';
 import PrivateRoute from './private-route';
 import { Router } from 'react-router-dom';
-import { getCurrentAccountAdapter } from '@/main/adapters/current-account-adapter';
 import { mockAccountModel } from '@/domain/test';
 
 const Page: React.FC = () => {
