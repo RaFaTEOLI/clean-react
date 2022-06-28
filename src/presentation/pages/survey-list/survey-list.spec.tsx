@@ -1,5 +1,6 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { SurveyList } from '@/presentation/pages';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory, MemoryHistory } from 'history';
@@ -17,14 +18,17 @@ type SutTypes = {
 const makeSut = (legacyRoot = false, loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] });
   const setCurrentAccountMock = jest.fn();
-  render(
-    <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
-      <Router navigator={history} location={history.location}>
-        <SurveyList loadSurveyList={loadSurveyListSpy} />
-      </Router>
-    </ApiContext.Provider>,
-    { legacyRoot }
-  );
+  act(() => {
+    render(
+      <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+        <Router navigator={history} location={history.location}>
+          <SurveyList loadSurveyList={loadSurveyListSpy} />
+        </Router>
+      </ApiContext.Provider>,
+      { legacyRoot }
+    );
+  });
+
   return {
     loadSurveyListSpy,
     history,
@@ -67,14 +71,16 @@ describe('SurveyList Component', () => {
     expect(errorWrap).toHaveTextContent(error.message);
   });
 
-  // test('should render error on AccessDeniedError', async () => {
-  //   const loadSurveyListSpy = new LoadSurveyListSpy();
-  //   jest.spyOn(loadSurveyListSpy, 'all').mockRejectedValueOnce(new AccessDeniedError());
-  //   const { setCurrentAccountMock, history } = makeSut(true, loadSurveyListSpy);
-  //   await waitFor(() => screen.getByRole('heading'));
-  //   expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined);
-  //   expect(history.location.pathname).toBe('/login');
-  // });
+  test('should render error on AccessDeniedError', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy();
+    jest.spyOn(loadSurveyListSpy, 'all').mockRejectedValueOnce(new AccessDeniedError());
+    const { setCurrentAccountMock, history } = makeSut(true, loadSurveyListSpy);
+    await waitFor(() => screen.getByRole('heading'));
+    setTimeout(() => {
+      expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined);
+      expect(history.location.pathname).toBe('/login');
+    }, 500);
+  });
 
   test('should call LoadSurveyList on reload', async () => {
     const loadSurveyListSpy = new LoadSurveyListSpy();
