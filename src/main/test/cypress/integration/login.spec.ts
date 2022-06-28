@@ -92,7 +92,8 @@ describe('Login', () => {
     Http.mockOk();
 
     populateFields();
-    cy.getByTestId('submit').dblclick();
+    cy.getByTestId('submit').click();
+    cy.getByTestId('submit').click({ force: true });
 
     Helper.testHttpCallsCount(1);
   });
