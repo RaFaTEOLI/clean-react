@@ -1,6 +1,7 @@
-import faker from '@faker-js/faker';
-import * as FormHelper from '../support/form-helper';
+import * as Helper from '../support/helpers';
+import * as FormHelper from '../support/form-helpers';
 import * as Http from '../support/login-mocks';
+import faker from '@faker-js/faker';
 
 const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email());
@@ -56,7 +57,7 @@ describe('Login', () => {
 
     FormHelper.testMainError('Something went wrong! Try again later');
 
-    FormHelper.testUrl('/login');
+    Helper.testUrl('/login');
   });
 
   it('should present InvalidCredentialsError on 401', () => {
@@ -65,7 +66,7 @@ describe('Login', () => {
 
     FormHelper.testMainError('Invalid Credentials');
 
-    FormHelper.testUrl('/login');
+    Helper.testUrl('/login');
   });
 
   it('should present UnexpectedError on default error cases', () => {
@@ -73,16 +74,7 @@ describe('Login', () => {
     simulateValidSubmit();
 
     FormHelper.testMainError('Something went wrong! Try again later');
-    FormHelper.testUrl('/login');
-  });
-
-  it('should present UnexpectedError if invalid data is returned', () => {
-    Http.mockInvalidData();
-    simulateValidSubmit();
-
-    FormHelper.testMainError('Something went wrong! Try again later');
-
-    FormHelper.testUrl('/login');
+    Helper.testUrl('/login');
   });
 
   it('should present save account if valid credentials are provided', () => {
@@ -92,8 +84,8 @@ describe('Login', () => {
     cy.getByTestId('main-error').should('not.exist');
     cy.getByTestId('spinner').should('not.exist');
 
-    FormHelper.testUrl('/');
-    FormHelper.testLocalStorageItem('account');
+    Helper.testUrl('/');
+    Helper.testLocalStorageItem('account');
   });
 
   it('should prevent multiple submits', () => {
@@ -102,7 +94,7 @@ describe('Login', () => {
     populateFields();
     cy.getByTestId('submit').dblclick();
 
-    FormHelper.testHttpCallsCount(1);
+    Helper.testHttpCallsCount(1);
   });
 
   it('should not call submit if form is invalid', () => {
@@ -110,6 +102,6 @@ describe('Login', () => {
 
     cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}');
 
-    FormHelper.testHttpCallsCount(0);
+    Helper.testHttpCallsCount(0);
   });
 });
