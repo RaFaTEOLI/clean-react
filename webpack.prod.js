@@ -35,6 +35,7 @@ module.exports = merge(common, {
   },
   externals: {
     react: 'React',
+    axios: 'axios',
     'react-dom': 'ReactDOM'
   },
   plugins: [
