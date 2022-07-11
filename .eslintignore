@@ -6,3 +6,4 @@ public
 *.json
 webpack.*.js
 dist
+index.js
