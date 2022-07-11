@@ -26,6 +26,8 @@ jobs:
   build:
     docker:
       - image: cimg/node:17.2.0
+    environment:
+      API_URL: $API_URL
     working_directory: ~/repo
     steps:
       - checkout
