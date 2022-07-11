@@ -1,6 +1,15 @@
+import * as Helper from '../utils/helpers';
+import * as FormHelper from '../utils/form-helpers';
+import * as Http from '../utils/http-mocks';
 import faker from '@faker-js/faker';
-import * as FormHelper from '../support/form-helper';
-import * as Http from '../support/login-mocks';
+
+const path = /api\/login/;
+const mockInvalidCredentialsError = (): void => Http.mockUnauthorizedError(path);
+const mockUnexpectedError = (): void => Http.mockServerError(path, 'POST');
+const mockSuccess = (): void => {
+  Http.mockOk(/api\/surveys/, 'GET', 'survey-list');
+  Http.mockOk(path, 'POST', 'account', 'loginRequest');
+};
 
 const populateFields = (): void => {
   cy.getByTestId('email').focus().type(faker.internet.email());
@@ -51,65 +60,57 @@ describe('Login', () => {
   });
 
   it('should show UnexpectedError on 400', () => {
-    Http.mockUnexpectedError();
+    mockUnexpectedError();
     simulateValidSubmit();
 
     FormHelper.testMainError('Something went wrong! Try again later');
 
-    FormHelper.testUrl('/login');
+    Helper.testUrl('/login');
   });
 
   it('should present InvalidCredentialsError on 401', () => {
-    Http.mockInvalidCredentialsError();
+    mockInvalidCredentialsError();
     simulateValidSubmit();
 
     FormHelper.testMainError('Invalid Credentials');
 
-    FormHelper.testUrl('/login');
+    Helper.testUrl('/login');
   });
 
   it('should present UnexpectedError on default error cases', () => {
-    Http.mockUnexpectedError();
+    mockUnexpectedError();
     simulateValidSubmit();
 
     FormHelper.testMainError('Something went wrong! Try again later');
-    FormHelper.testUrl('/login');
-  });
-
-  it('should present UnexpectedError if invalid data is returned', () => {
-    Http.mockInvalidData();
-    simulateValidSubmit();
-
-    FormHelper.testMainError('Something went wrong! Try again later');
-
-    FormHelper.testUrl('/login');
+    Helper.testUrl('/login');
   });
 
   it('should present save account if valid credentials are provided', () => {
-    Http.mockOk();
+    mockSuccess();
     simulateValidSubmit();
 
     cy.getByTestId('main-error').should('not.exist');
     cy.getByTestId('spinner').should('not.exist');
 
-    FormHelper.testUrl('/');
-    FormHelper.testLocalStorageItem('account');
+    Helper.testUrl('/');
+    Helper.testLocalStorageItem('account');
   });
 
   it('should prevent multiple submits', () => {
-    Http.mockOk();
-
+    mockSuccess();
     populateFields();
-    cy.getByTestId('submit').dblclick();
 
-    FormHelper.testHttpCallsCount(1);
+    cy.getByTestId('submit').click();
+
+    cy.wait('@loginRequest');
+    cy.get('@loginRequest.all').should('have.length', 1);
   });
 
   it('should not call submit if form is invalid', () => {
-    Http.mockOk();
+    mockSuccess();
 
     cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}');
 
-    FormHelper.testHttpCallsCount(0);
+    Helper.testHttpCallsCount(0);
   });
 });

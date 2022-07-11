@@ -5,6 +5,7 @@ version: 2.1
 orbs:
   node: circleci/node@4.7
   coveralls: coveralls/coveralls@1.0.6
+  heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 
 jobs:
   test_and_lint:
@@ -22,6 +23,21 @@ jobs:
           name: Test CI
       - coveralls/upload
 
+  build:
+    docker:
+      - image: cimg/node:17.2.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - run:
+          name: Run Build
+          command: yarn build
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
@@ -29,10 +45,10 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - test_and_lint
-      # - node/test:
-      #     # This is the node version to use for the `cimg/node` tag
-      #     # Relevant tags can be found on the CircleCI Developer Hub
-      #     # https://circleci.com/developer/images/image/cimg/node
-      #     version: '16.10'
-      #     # If you are using yarn, change the line below from "npm" to "yarn"
-      #     pkg-manager: yarn
+      - build
+      - heroku/deploy-via-git:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
