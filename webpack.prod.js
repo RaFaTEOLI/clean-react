@@ -1,6 +1,6 @@
+const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common');
 const { merge } = require('webpack-merge');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -43,7 +43,9 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       template: './template.prod.html'
     }),
-    new Dotenv(),
+    new DefinePlugin({
+      'process.env.API_URL': JSON.stringify('https://fordevs.herokuapp.com/api')
+    }),
     new MiniCssExtractPlugin({
       filename: 'main-bundle-[fullhash].css'
     })
