@@ -37,7 +37,7 @@ module.exports = merge(common, {
       writeToDisk: true
     },
     static: {
-      directory: './public'
+      directory: './dist'
     },
     historyApiFallback: true,
     port: 8080
