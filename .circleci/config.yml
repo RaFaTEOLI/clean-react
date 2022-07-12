@@ -59,7 +59,7 @@ workflows:
     jobs:
       - test_and_lint
       - cypress/install:
-          install-command: yarn install --frozen-lockfile
+          install-command: yarn install
       - cypress/run:
           name: Chrome
           yarn: true
