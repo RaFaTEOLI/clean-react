@@ -58,10 +58,16 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - test_and_lint
-      - cypress/install
+      - cypress/install:
+          install-command: yarn install --frozen-lockfile
       - cypress/run:
+          name: Chrome
+          yarn: true
+          requires:
+            - cypress/install
           executor: with-chrome
           browser: chrome
+          record: true
       - build
       - heroku/deploy-via-git:
           requires:
