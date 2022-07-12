@@ -32,6 +32,7 @@ jobs:
           name: Install Dependencies
           command: yarn install
       - cypress/install
+          install-command: yarn install --frozen-lockfile
       - run:
           requires:
             - cypress/install
