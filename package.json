@@ -1,6 +1,6 @@
 {
   "name": "clean-react",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "React App using Hooks, Typescript, TDD, Clean Architecture, Design Patterns and SOLID Principles",
   "main": "src/main/index.tsx",
   "repository": "git@github.com:RaFaTEOLI/clean-react.git",
