@@ -8,6 +8,11 @@ orbs:
   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
   cypress: cypress-io/cypress@2.0.0
 
+executors:
+  with-chrome:
+    docker:
+      - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
+
 jobs:
   test_and_lint:
     docker:
@@ -26,6 +31,8 @@ jobs:
       - run:
           command: yarn test:cypress:ci
           name: Test Cypress
+          executor: with-chrome
+          browser: chrome
 
   build:
     docker:
