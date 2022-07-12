@@ -33,6 +33,8 @@ jobs:
       #     name: Test Cypress
       #     executor: with-chrome
       #     browser: chrome
+      - cypress/run:
+          command: yarn test:cypress:ci
 
   build:
     docker:
@@ -58,6 +60,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - test_and_lint
+      - cypress/install
       - cypress/run:
           executor: with-chrome
           browser: chrome
