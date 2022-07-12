@@ -33,8 +33,6 @@ jobs:
       #     name: Test Cypress
       #     executor: with-chrome
       #     browser: chrome
-      - cypress/run:
-          command: yarn test:cypress:ci
 
   build:
     docker:
