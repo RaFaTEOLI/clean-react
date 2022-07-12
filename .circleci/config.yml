@@ -28,11 +28,14 @@ jobs:
           command: yarn test:ci
           name: Test CI
       - coveralls/upload
-      # - run:
-      #     command: yarn test:cypress:ci
-      #     name: Test Cypress
-      #     executor: with-chrome
-      #     browser: chrome
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - run:
+          command: yarn test:cypress:ci
+          name: Test Cypress
+          executor: with-chrome
+          browser: chrome
 
   build:
     docker:
@@ -58,16 +61,6 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - test_and_lint
-      - cypress/install:
-          install-command: yarn install --frozen-lockfile
-      - cypress/run:
-          name: Chrome
-          yarn: true
-          requires:
-            - cypress/install
-          executor: with-chrome
-          browser: chrome
-          record: true
       - build
       - heroku/deploy-via-git:
           requires:
