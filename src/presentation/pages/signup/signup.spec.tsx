@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { fireEvent, render, waitFor, screen } from '@testing-library/react';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { ApiContext } from '@/presentation/contexts';
 import SignUp from './signup';
 import { Helper, ValidationStub } from '@/presentation/test';

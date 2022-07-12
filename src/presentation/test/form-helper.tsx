@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { fireEvent, screen } from '@testing-library/react';
 
 export const testStatusForField = (fieldName: string, validationError = ''): void => {

@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { AddAccount } from '../usecases/add-account';
 import { mockAccountModel } from './mock-account';
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { GetStorage } from '../protocols/cache';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 export class GetStorageSpy implements GetStorage {
   key: string;

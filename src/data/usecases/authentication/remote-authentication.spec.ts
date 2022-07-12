@@ -3,7 +3,7 @@ import { RemoteAuthentication } from './remote-authentication';
 import { mockAuthenticationModel, mockAuthenticationParams } from '@/domain/test';
 import { InvalidCredentialsError, UnexpectedError } from '@/domain/errors';
 import { HttpStatusCode } from '@/data/protocols/http';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 type SutTypes = {
   sut: RemoteAuthentication;

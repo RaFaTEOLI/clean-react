@@ -1,5 +1,5 @@
 import axios from 'axios';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const mockHttpResponse = (): any => ({

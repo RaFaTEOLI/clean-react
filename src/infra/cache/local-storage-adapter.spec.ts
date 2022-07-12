@@ -1,5 +1,5 @@
 import { LocalStorageAdapter } from './local-storage-adapter';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import 'jest-localstorage-mock';
 
 const makeSut = (): LocalStorageAdapter => new LocalStorageAdapter();

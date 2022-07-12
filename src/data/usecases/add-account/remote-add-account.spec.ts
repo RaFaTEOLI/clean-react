@@ -3,7 +3,7 @@ import { HttpPostClientSpy } from '@/data/test';
 import { EmailAlreadyBeingUsedError, UnexpectedError } from '@/domain/errors';
 import { mockAddAccountParams, mockAddAccountModel } from '@/domain/test';
 import { RemoteAddAccount } from './remote-add-account';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 type SutTypes = {
   sut: RemoteAddAccount;

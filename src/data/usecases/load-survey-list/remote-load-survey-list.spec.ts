@@ -2,7 +2,7 @@ import { HttpGetClientSpy, mockRemoteSurveyListModel } from '@/data/test';
 import { RemoteLoadSurveyList } from './remote-load-survey-list';
 import { HttpStatusCode } from '@/data/protocols/http';
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 type SutTypes = {
   sut: RemoteLoadSurveyList;

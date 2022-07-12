@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { Authentication } from '../usecases';
 
 export const mockAccountModel = (): Authentication.Model => ({

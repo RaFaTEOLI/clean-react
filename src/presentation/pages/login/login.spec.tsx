@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { ApiContext } from '@/presentation/contexts';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { Login } from '@/presentation/pages';

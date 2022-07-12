@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 export const mockUnauthorizedError = (url: RegExp): void => {
   cy.intercept(
