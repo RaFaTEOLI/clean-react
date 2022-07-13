@@ -29,9 +29,6 @@ jobs:
           name: Test CI
       - coveralls/upload
       - run:
-          name: Install Dependencies
-          command: yarn install
-      - run:
           command: yarn test:cypress:ci
           name: Test Cypress
           executor: with-chrome
