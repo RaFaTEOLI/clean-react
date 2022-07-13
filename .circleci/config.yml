@@ -53,19 +53,19 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - lint_and_test
-      - cypress/install:
-          executor: with-chrome
-          yarn: true
-          requires:
-            - lint_and_test
-      - cypress/run:
-          executor: with-chrome
-          yarn: true
-          browser: chrome
-          requires: 
-            - cypress/install
-          start: yarn dev:base
-          wait-on: 'http-get://localhost:8080'
+      # - cypress/install:
+      #     executor: with-chrome
+      #     yarn: true
+      #     requires:
+      #       - lint_and_test
+      # - cypress/run:
+      #     executor: with-chrome
+      #     yarn: true
+      #     browser: chrome
+      #     requires: 
+      #       - cypress/install
+      #     start: yarn dev:base
+      #     wait-on: 'http-get://localhost:8080'
       - build
       - heroku/deploy-via-git:
           requires:
