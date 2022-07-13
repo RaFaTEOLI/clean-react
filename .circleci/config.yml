@@ -65,7 +65,7 @@ workflows:
           requires: 
             - cypress/install
           start: yarn dev:base
-          wait-on: 'http-get://localhost:4200'
+          wait-on: 'http-get://localhost:8080'
       - build
       - heroku/deploy-via-git:
           requires:
