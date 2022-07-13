@@ -6,7 +6,7 @@ orbs:
   node: circleci/node@4.7
   coveralls: coveralls/coveralls@1.0.6
   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
-  cypress: cypress-io/cypress@2.0.0
+  cypress: cypress-io/cypress@1
 
 executors:
   with-chrome:
@@ -28,11 +28,8 @@ jobs:
           command: yarn test:ci
           name: Test CI
       - coveralls/upload
-      - run:
-          command: yarn test:cypress:ci
-          name: Test Cypress
-          executor: with-chrome
-          browser: chrome
+      - cypress/run:
+          start: yarn dev:base
 
   build:
     docker:
