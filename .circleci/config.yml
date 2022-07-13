@@ -11,7 +11,7 @@ orbs:
 executors:
   with-chrome:
     docker:
-      - image: 'cypress/browsers:node14.17.0-chrome90-ff88'
+      - image: 'cypress/browsers:node14.17.0-chrome91-ff89'
 
 jobs:
   lint_and_test:
