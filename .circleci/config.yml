@@ -54,7 +54,7 @@ workflows:
     jobs:
       - lint_and_test
       - cypress/install:
-          executor: cypress/base-14
+          executor: with-chrome
           yarn: true
           requires:
             - lint_and_test
