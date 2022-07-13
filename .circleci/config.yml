@@ -53,9 +53,13 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - lint_and_test
+      - cypress/install:
+          yarn: true
+          requires:
+            - lint_and_test
       - cypress/run:
           requires: 
-            - lint_and_test
+            - cypress/install
           start: yarn dev:base
       - build
       - heroku/deploy-via-git:
