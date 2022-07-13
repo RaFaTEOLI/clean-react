@@ -8,6 +8,11 @@ orbs:
   heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
   cypress: cypress-io/cypress@1
 
+executors:
+  with-chrome:
+    docker:
+      - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
+
 jobs:
   lint_and_test:
     docker:
@@ -23,8 +28,6 @@ jobs:
           command: yarn test:ci
           name: Test CI
       - coveralls/upload
-      - cypress/run:
-          start: yarn dev:base
 
   build:
     docker:
@@ -50,6 +53,10 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - lint_and_test
+      - cypress/run:
+          requires: 
+            - lint_and_test
+          start: yarn dev:base
       - build
       - heroku/deploy-via-git:
           requires:
