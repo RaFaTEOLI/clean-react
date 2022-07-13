@@ -14,7 +14,7 @@ executors:
       - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
 
 jobs:
-  test_and_lint:
+  lint_and_test:
     docker:
       - image: cimg/node:17.2.0
     steps:
@@ -31,11 +31,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: yarn install
-      - cypress/install
-          install-command: yarn install --frozen-lockfile
       - run:
-          requires:
-            - cypress/install
           command: yarn test:cypress:ci
           name: Test Cypress
           executor: with-chrome
@@ -64,7 +60,7 @@ workflows:
   build: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - test_and_lint
+      - lint_and_test
       - build
       - heroku/deploy-via-git:
           requires:
