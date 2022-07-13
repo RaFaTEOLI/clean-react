@@ -12,9 +12,6 @@ executors:
   with-chrome:
     docker:
       - image: 'cypress/browsers:node14.16.0-chrome90-ff88'
-  with-node:
-    docker:
-      - image: cimg/node:17.2.0
 
 jobs:
   lint_and_test:
@@ -57,12 +54,13 @@ workflows:
     jobs:
       - lint_and_test
       - cypress/install:
-          executor: with-node
+          executor: cypress/base-14
           yarn: true
           requires:
             - lint_and_test
       - cypress/run:
           executor: with-chrome
+          browser: chrome
           requires: 
             - cypress/install
           start: yarn dev:base
