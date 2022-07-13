@@ -60,6 +60,7 @@ workflows:
             - lint_and_test
       - cypress/run:
           executor: with-chrome
+          yarn: true
           browser: chrome
           requires: 
             - cypress/install
