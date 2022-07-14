@@ -1,5 +1,5 @@
 import React from 'react';
-import { Footer, Header, Spinner } from '@/presentation/components';
+import { Footer, Header, Loading } from '@/presentation/components';
 import Styles from './survey-result-styles.scss';
 
 const SurveyResult: React.FC = () => {
@@ -26,12 +26,7 @@ const SurveyResult: React.FC = () => {
           </li>
         </ul>
         <button>Go Back</button>
-        <div className={Styles.loadingWrap}>
-          <div className={Styles.loading}>
-            <span>Please Wait...</span>
-            <Spinner isNegative />
-          </div>
-        </div>
+        {false && <Loading />}
       </div>
       <Footer />
     </div>
