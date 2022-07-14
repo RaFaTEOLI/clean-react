@@ -12,10 +12,10 @@ const Input: React.FC<Props> = (props: Props) => {
   const inputRef = useRef<HTMLInputElement>();
   const error = state[`${props.name}Error`];
   const handleChange = (event: React.FocusEvent<HTMLInputElement>): void => {
-    setState({
-      ...state,
+    setState(prev => ({
+      ...prev,
       [event.target.name]: event.target.value
-    });
+    }));
   };
   return (
     <div data-testid={`${props.name}-wrap`} data-status={error ? 'invalid' : 'valid'} className={Styles.inputWrap}>
