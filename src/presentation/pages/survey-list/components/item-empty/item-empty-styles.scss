@@ -1,4 +1,5 @@
 @import "../../../../styles/colors.scss";
+@import "../../../../styles/animations.scss";
 
 .surveyItemEmpty {
   height: 250px;
@@ -10,7 +11,6 @@
   flex-basis: 48%;
   margin-bottom: 24px;
   box-shadow: 0px 1px 3px -1px $black;
-
   position: relative;
   overflow: hidden;
   background-repeat: no-repeat;
@@ -32,7 +32,7 @@
     140px 16px,
     120px 16px,
     160px 16px;
-
+  
   &::after {
     content: '';
     position: absolute;
@@ -49,11 +49,5 @@
 @media only screen and (max-width: 600px) {
   .surveyItemEmpty {
     flex-basis: 100%;
-  }
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
   }
 }
