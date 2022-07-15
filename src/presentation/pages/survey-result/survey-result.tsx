@@ -15,17 +15,17 @@ const SurveyResult: React.FC = () => {
             </hgroup>
             <ul>
               <li>
-                <img src="http://fordevs.herokuapp.com/static/img/logo-react.png" />
+                <img src="https://robohash.org/react" />
                 <span className={Styles.answer}>ReactJS</span>
                 <span className={Styles.percent}>50%</span>
               </li>
               <li className={Styles.active}>
-                <img src="http://fordevs.herokuapp.com/static/img/logo-react.png" />
+                <img src="https://robohash.org/react" />
                 <span className={Styles.answer}>ReactJS</span>
                 <span className={Styles.percent}>50%</span>
               </li>
               <li>
-                <img src="http://fordevs.herokuapp.com/static/img/logo-react.png" />
+                <img src="https://robohash.org/react" />
                 <span className={Styles.answer}>ReactJS</span>
                 <span className={Styles.percent}>50%</span>
               </li>
