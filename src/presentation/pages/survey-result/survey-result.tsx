@@ -1,15 +1,30 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Error, Footer, Header, Loading } from '@/presentation/components';
 import Styles from './survey-result-styles.scss';
 import { LoadSurveyResult } from '@/domain/usecases';
 
-const SurveyResult: React.FC = () => {
+type Props = {
+  loadSurveyResult?: LoadSurveyResult;
+};
+
+const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
   const [state] = useState({
     isLoading: false,
     error: '',
     surveyResult: null as LoadSurveyResult.Model
   });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await loadSurveyResult.show();
+        // setState(prev => ({ ...prev, surveys, reload: false }));
+      } catch (error) {
+        // handleError(error);
+      }
+    })();
+  }, []);
 
   return (
     <div className={Styles.surveyResultWrap}>
