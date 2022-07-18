@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useState, useEffect } from 'react';
 import { Calendar, Error, Footer, Header, Loading } from '@/presentation/components';
 import Styles from './survey-result-styles.scss';
@@ -32,7 +31,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
         handleError(error);
       }
     })();
-  }, []);
+  }, [state.reload]);
 
   return (
     <div className={Styles.surveyResultWrap}>
