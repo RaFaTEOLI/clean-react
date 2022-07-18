@@ -53,6 +53,12 @@
     cursor: pointer;
     border-radius: 0px 0px 8px 8px;
 
+    a {
+      color: $white;
+      line-height: 40px;
+      text-decoration: none;
+    }
+
     &:hover {
       background-color: $primaryDark;
     }
