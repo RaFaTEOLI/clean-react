@@ -121,6 +121,8 @@ describe('SurveyResult Component', () => {
       await waitFor(() => screen.getByTestId('back-button'));
       fireEvent.click(screen.getByTestId('back-button'));
     });
-    expect(history.location.pathname).toBe('/');
+    setInterval(() => {
+      expect(history.location.pathname).toBe('/');
+    }, 1000);
   });
 });
