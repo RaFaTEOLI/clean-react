@@ -3,12 +3,15 @@ import { Calendar, Error, Footer, Header, Loading } from '@/presentation/compone
 import Styles from './survey-result-styles.scss';
 import { LoadSurveyResult } from '@/domain/usecases';
 import { useErrorHandler } from '@/presentation/hooks';
+import { useNavigate } from 'react-router';
 
 type Props = {
   loadSurveyResult: LoadSurveyResult;
 };
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
+  const navigate = useNavigate();
+
   const handleError = useErrorHandler((error: Error) => {
     setState(prev => ({ ...prev, surveyResult: null, error: error.message }));
   });
@@ -26,7 +29,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
     (async () => {
       try {
         const surveyResult = await loadSurveyResult.show();
-        setState(prev => ({ ...prev, surveyResult, reload: false }));
+        setState(prev => ({ ...prev, surveyResult }));
       } catch (error) {
         handleError(error);
       }
@@ -60,7 +63,9 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
                 </li>
               ))}
             </ul>
-            <button>Voltar</button>
+            <button data-testid="back-button" onClick={() => navigate(-1)}>
+              Back
+            </button>
           </>
         )}
         {state.isLoading && <Loading />}
