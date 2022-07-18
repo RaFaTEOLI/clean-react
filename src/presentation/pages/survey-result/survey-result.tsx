@@ -5,7 +5,7 @@ import { LoadSurveyResult } from '@/domain/usecases';
 import { useErrorHandler } from '@/presentation/hooks';
 
 type Props = {
-  loadSurveyResult?: LoadSurveyResult;
+  loadSurveyResult: LoadSurveyResult;
 };
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {

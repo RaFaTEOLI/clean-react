@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LoginFactory, SignUpFactory, SurveyFactory } from '@/main/factories/pages/';
+import { LoginFactory, SignUpFactory, SurveyFactory, SurveyResultFactory } from '@/main/factories/pages/';
 import { ApiContext } from '@/presentation/contexts';
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '../adapters/current-account-adapter';
 import { PrivateRoute } from '@/presentation/components';
@@ -19,6 +19,14 @@ const Router: React.FC = () => {
             element={
               <PrivateRoute>
                 <SurveyFactory />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/surveys/:id"
+            element={
+              <PrivateRoute>
+                <SurveyResultFactory />
               </PrivateRoute>
             }
           />
