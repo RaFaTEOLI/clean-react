@@ -3,12 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Error, Footer, Header, Loading } from '@/presentation/components';
 import Styles from './survey-result-styles.scss';
 import { LoadSurveyResult } from '@/domain/usecases';
+import { useErrorHandler } from '@/presentation/hooks';
 
 type Props = {
   loadSurveyResult?: LoadSurveyResult;
 };
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
+  const handleError = useErrorHandler((error: Error) => {
+    setState(prev => ({ ...prev, surveyResult: null, error: error.message }));
+  });
+
   const [state, setState] = useState({
     isLoading: false,
     error: '',
@@ -21,7 +26,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
         const surveyResult = await loadSurveyResult.show();
         setState(prev => ({ ...prev, surveyResult, reload: false }));
       } catch (error) {
-        // handleError(error);
+        handleError(error);
       }
     })();
   }, []);
