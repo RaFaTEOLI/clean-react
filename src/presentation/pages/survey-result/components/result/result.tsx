@@ -3,6 +3,7 @@ import Styles from './result-styles.scss';
 import { Calendar } from '@/presentation/components';
 import { useNavigate } from 'react-router';
 import { LoadSurveyResult } from '@/domain/usecases';
+import Answer from '../answer/answer';
 
 type Props = {
   surveyResult: LoadSurveyResult.Model;
@@ -18,18 +19,10 @@ const Result: React.FC<Props> = ({ surveyResult }: Props) => {
       </hgroup>
       <ul className={Styles.answersList} data-testid="answers">
         {surveyResult.answers.map(answer => (
-          <li data-testid="answer-wrap" key={answer.answer} className={answer.isCurrentAccountAnswer ? Styles.active : ''}>
-            {answer.image && <img data-testid="image" src={answer.image} alt={answer.answer} />}
-            <span data-testid="answer" className={Styles.answer}>
-              {answer.answer}
-            </span>
-            <span data-testid="percent" className={Styles.percent}>
-              {answer.percent}%
-            </span>
-          </li>
+          <Answer key={answer.answer} answer={answer} />
         ))}
       </ul>
-      <button data-testid="back-button" onClick={() => navigate(-1)}>
+      <button className={Styles.button} data-testid="back-button" onClick={() => navigate(-1)}>
         Back
       </button>
     </>
