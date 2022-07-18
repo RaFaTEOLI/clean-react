@@ -17,8 +17,11 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     error: '',
-    surveyResult: null as LoadSurveyResult.Model
+    surveyResult: null as LoadSurveyResult.Model,
+    reload: false
   });
+
+  const reload = (): void => setState(prev => ({ isLoading: false, surveyResult: null, error: '', reload: !prev.reload }));
 
   useEffect(() => {
     (async () => {
@@ -62,7 +65,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
           </>
         )}
         {state.isLoading && <Loading />}
-        {state.error && <Error error={state.error} reload={() => {}} />}
+        {state.error && <Error error={state.error} reload={reload} />}
       </div>
       <Footer />
     </div>
