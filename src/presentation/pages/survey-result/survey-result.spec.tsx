@@ -1,7 +1,7 @@
 import { SurveyResult } from '@/presentation/pages';
 import { ApiContext } from '@/presentation/contexts';
 import { mockAccountModel, LoadSurveyResultSpy, mockSurveyResultModel } from '@/domain/test';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import React from 'react';
@@ -15,14 +15,15 @@ type SutTypes = {
 };
 
 const makeSut = (loadSurveyResultSpy = new LoadSurveyResultSpy()): SutTypes => {
-  const history = createMemoryHistory({ initialEntries: ['/surveys'] });
+  const history = createMemoryHistory({ initialEntries: ['/', '/surveys/any_id'], initialIndex: 1 });
   const setCurrentAccountMock = jest.fn();
   render(
     <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock, getCurrentAccount: () => mockAccountModel() }}>
       <Router navigator={history} location={history.location}>
         <SurveyResult loadSurveyResult={loadSurveyResultSpy} />
       </Router>
-    </ApiContext.Provider>
+    </ApiContext.Provider>,
+    { legacyRoot: true }
   );
   return {
     loadSurveyResultSpy,
@@ -83,12 +84,10 @@ describe('SurveyResult Component', () => {
     const error = new UnexpectedError();
     jest.spyOn(loadSurveyResultSpy, 'show').mockRejectedValueOnce(error);
     makeSut(loadSurveyResultSpy);
-    await waitFor(() => screen.getByTestId('survey-result'));
-    setInterval(() => {
-      expect(screen.queryByTestId('question')).not.toBeInTheDocument();
-      expect(screen.getByTestId('error')).toHaveTextContent(error.message);
-      expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
-    }, 1000);
+    await waitFor(() => screen.getByTestId('error'));
+    expect(screen.queryByTestId('question')).not.toBeInTheDocument();
+    expect(screen.getByTestId('error')).toHaveTextContent(error.message);
+    expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
   });
 
   test('should logout on AccessDeniedError', async () => {
@@ -107,10 +106,21 @@ describe('SurveyResult Component', () => {
     jest.spyOn(loadSurveyResultSpy, 'show').mockRejectedValueOnce(new UnexpectedError());
     makeSut(loadSurveyResultSpy);
     await waitFor(() => screen.getByTestId('survey-result'));
-    setInterval(async () => {
+    await act(async () => {
+      await waitFor(() => screen.getByTestId('reload'));
       fireEvent.click(screen.getByTestId('reload'));
-      expect(loadSurveyResultSpy.callsCount).toBe(1);
-      await waitFor(() => screen.getByTestId('survey-result'));
-    }, 1000);
+    });
+
+    expect(loadSurveyResultSpy.callsCount).toBe(1);
+  });
+
+  test('should go to SurveyList on back button click', async () => {
+    const { history } = makeSut();
+    await waitFor(() => screen.getByTestId('survey-result'));
+    await act(async () => {
+      await waitFor(() => screen.getByTestId('back-button'));
+      fireEvent.click(screen.getByTestId('back-button'));
+    });
+    expect(history.location.pathname).toBe('/');
   });
 });
