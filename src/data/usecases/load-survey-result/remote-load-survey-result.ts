@@ -1,12 +1,12 @@
-import { HttpGetClient, HttpStatusCode } from '@/data/protocols/http';
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http';
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import { LoadSurveyResult } from '@/domain/usecases';
 
 export class RemoteLoadSurveyResult implements LoadSurveyResult {
-  constructor(private readonly url: string, private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyResult.Model>) {}
+  constructor(private readonly url: string, private readonly httpGetClient: HttpClient<RemoteLoadSurveyResult.Model>) {}
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async show(): Promise<LoadSurveyResult.Model> {
-    const httpResponse = await this.httpGetClient.get({ url: this.url });
+    const httpResponse = await this.httpGetClient.request({ url: this.url, method: 'get' });
     const remoteSurveyResult = httpResponse.body;
     switch (httpResponse.statusCode) {
       case HttpStatusCode.success:
