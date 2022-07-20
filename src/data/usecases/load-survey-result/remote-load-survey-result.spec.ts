@@ -20,7 +20,7 @@ const makeSut = (url = faker.internet.url()): SutTypes => {
 };
 
 describe('RemoteLoadSurveyResult', () => {
-  test('should call HttpGetClient with correct URL', async () => {
+  test('should call HttpClient with correct URL and Method', async () => {
     const url = faker.internet.url();
     const { sut, httpClientSpy } = makeSut(url);
     httpClientSpy.response = {
@@ -29,9 +29,10 @@ describe('RemoteLoadSurveyResult', () => {
     };
     await sut.show();
     expect(httpClientSpy.url).toBe(url);
+    expect(httpClientSpy.method).toBe('get');
   });
 
-  test('should throw AccessDeniedError if HttpGetClient returns 403', async () => {
+  test('should throw AccessDeniedError if HttpClient returns 403', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
@@ -40,7 +41,7 @@ describe('RemoteLoadSurveyResult', () => {
     await expect(promise).rejects.toThrow(new AccessDeniedError());
   });
 
-  test('should throw UnexpectedError if HttpGetClient returns 404', async () => {
+  test('should throw UnexpectedError if HttpClient returns 404', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
@@ -49,7 +50,7 @@ describe('RemoteLoadSurveyResult', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('should throw UnexpectedError if HttpGetClient returns 500', async () => {
+  test('should throw UnexpectedError if HttpClient returns 500', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
@@ -58,7 +59,7 @@ describe('RemoteLoadSurveyResult', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('should return a SurveyResult if HttpGetClient returns 200', async () => {
+  test('should return a SurveyResult if HttpClient returns 200', async () => {
     const { sut, httpClientSpy } = makeSut();
     const httpResult = mockRemoteSurveyResultModel();
     httpClientSpy.response = {

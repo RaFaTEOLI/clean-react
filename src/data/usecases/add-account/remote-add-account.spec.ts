@@ -20,21 +20,22 @@ const makeSut = (url: string = faker.internet.url()): SutTypes => {
 };
 
 describe('RemoteAddAccount', () => {
-  test('should call HttpPostClient with correct URL', async () => {
+  test('should call HttpClient with correct URL and Method', async () => {
     const url = faker.internet.url();
     const { sut, httpClientSpy } = makeSut(url);
     await sut.add(mockAddAccountParams());
     expect(httpClientSpy.url).toBe(url);
+    expect(httpClientSpy.method).toBe('post');
   });
 
-  test('should call HttpPostClient with correct body', async () => {
+  test('should call HttpClient with correct body', async () => {
     const { sut, httpClientSpy } = makeSut();
     const addAccountParams = mockAddAccountParams();
     await sut.add(addAccountParams);
     expect(httpClientSpy.body).toEqual(addAccountParams);
   });
 
-  test('should throw EmailAlreadyBeingUsed if HttpPostClient returns 403', async () => {
+  test('should throw EmailAlreadyBeingUsed if HttpClient returns 403', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
@@ -43,7 +44,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new EmailAlreadyBeingUsedError());
   });
 
-  test('should throw UnexpectedError if HttpPostClient returns 400', async () => {
+  test('should throw UnexpectedError if HttpClient returns 400', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest
@@ -52,7 +53,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('should throw UnexpectedError if HttpPostClient returns 404', async () => {
+  test('should throw UnexpectedError if HttpClient returns 404', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
@@ -61,7 +62,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('should throw UnexpectedError if HttpPostClient returns 500', async () => {
+  test('should throw UnexpectedError if HttpClient returns 500', async () => {
     const { sut, httpClientSpy } = makeSut();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
@@ -70,7 +71,7 @@ describe('RemoteAddAccount', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
-  test('should return an AddAccount.Model if HttpPostClient returns 200', async () => {
+  test('should return an AddAccount.Model if HttpClient returns 200', async () => {
     const { sut, httpClientSpy } = makeSut();
     const httpResult = mockAddAccountModel();
     httpClientSpy.response = {
