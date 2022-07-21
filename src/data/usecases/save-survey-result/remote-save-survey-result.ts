@@ -1,7 +1,7 @@
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http';
 import { RemoteSurveyResultModel } from '@/data/models';
 import { SaveSurveyResult } from '@/domain/usecases';
-import { AccessDeniedError } from '@/domain/errors';
+import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 
 export class RemoteSaveSurveyResult implements SaveSurveyResult {
   constructor(private readonly url: string, private readonly httpClient: HttpClient<RemoteSaveSurveyResult.Model>) {}
@@ -13,10 +13,12 @@ export class RemoteSaveSurveyResult implements SaveSurveyResult {
       body: params
     });
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.success:
+        return Promise.resolve(null);
       case HttpStatusCode.forbidden:
         throw new AccessDeniedError();
       default:
-        return Promise.resolve(null);
+        throw new UnexpectedError();
     }
   }
 }
