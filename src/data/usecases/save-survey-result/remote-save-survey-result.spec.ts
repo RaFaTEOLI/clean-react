@@ -51,4 +51,28 @@ describe('RemoteSaveSurveyResult', () => {
     const promise = sut.save(mockSaveSurveyResultParams());
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
+
+  test('should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    };
+    const promise = sut.save(mockSaveSurveyResultParams());
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
+  test('should return a SurveyResult on 200', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    const httpResult = mockRemoteSurveyResultModel();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.success,
+      body: httpResult
+    };
+    const httpResponse = await sut.save(mockSaveSurveyResultParams());
+    expect(httpResponse).toEqual({
+      question: httpResult.question,
+      answers: httpResult.answers,
+      date: new Date(httpResult.date)
+    });
+  });
 });
