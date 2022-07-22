@@ -6,7 +6,7 @@ import { signUpState, Input, SubmitButton, FormStatus } from './components';
 import { Footer, LoginHeader, currentAccountState } from '@/presentation/components';
 import { Validation } from '@/presentation/protocols/validation';
 import { AddAccount } from '@/domain/usecases';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
 type Props = {
   validation?: Validation;
@@ -14,6 +14,7 @@ type Props = {
 };
 
 const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
+  const resetSignUpState = useResetRecoilState(signUpState);
   const { setCurrentAccount } = useRecoilValue(currentAccountState);
   const navigate = useNavigate();
   const [state, setState] = useRecoilState(signUpState);
@@ -28,6 +29,7 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
     }));
   };
 
+  useEffect(() => resetSignUpState(), []);
   useEffect(() => validate('name'), [state.name]);
   useEffect(() => validate('email'), [state.email]);
   useEffect(() => validate('password'), [state.password]);
