@@ -1,38 +1,33 @@
 import React from 'react';
 import { fireEvent, render, RenderResult } from '@testing-library/react';
-import Input from './input';
-import Context from '@/presentation/contexts/form/form-context';
 import { faker } from '@faker-js/faker';
+import { InputBase } from '@/presentation/components';
 
 const makeSut = (fieldName: string): RenderResult => {
-  return render(
-    <Context.Provider value={{ state: {} }}>
-      <Input name={fieldName} />
-    </Context.Provider>
-  );
+  return render(<InputBase name={fieldName} state={{}} setState={null} />);
 };
 
 describe('Input Component', () => {
-  test('should begin with readOnly', () => {
-    const fieldName = faker.database.column();
-    const sut = makeSut(fieldName);
-    const input = sut.getByTestId(fieldName) as HTMLInputElement;
-    expect(input.readOnly).toBeTruthy();
+  test('Should begin with readOnly', () => {
+    const field = faker.database.column();
+    const sut = makeSut(field);
+    const input = sut.getByTestId(field) as HTMLInputElement;
+    expect(input.readOnly).toBe(true);
   });
 
-  test('should remove readOnly on focus', () => {
-    const fieldName = faker.database.column();
-    const sut = makeSut(fieldName);
-    const input = sut.getByTestId(fieldName) as HTMLInputElement;
+  test('Should remove readOnly on focus', () => {
+    const field = faker.database.column();
+    const sut = makeSut(field);
+    const input = sut.getByTestId(field) as HTMLInputElement;
     fireEvent.focus(input);
-    expect(input.readOnly).toBeFalsy();
+    expect(input.readOnly).toBe(false);
   });
 
-  test('should focus input on label click', () => {
-    const fieldName = faker.database.column();
-    const sut = makeSut(fieldName);
-    const input = sut.getByTestId(fieldName);
-    const label = sut.getByTestId(`${fieldName}-label`);
+  test('Should focus input on label click', () => {
+    const field = faker.database.column();
+    const sut = makeSut(field);
+    const input = sut.getByTestId(field);
+    const label = sut.getByTestId(`${field}-label`);
     fireEvent.click(label);
     expect(document.activeElement).toBe(input);
   });
