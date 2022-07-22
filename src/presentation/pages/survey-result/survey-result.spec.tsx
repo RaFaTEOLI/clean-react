@@ -7,6 +7,7 @@ import { createMemoryHistory, MemoryHistory } from 'history';
 import React from 'react';
 import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import { AccountModel } from '@/domain/models';
+import userEvent from '@testing-library/user-event';
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy;
@@ -18,11 +19,13 @@ type SutTypes = {
 type SutParams = {
   loadSurveyResultSpy?: LoadSurveyResultSpy;
   saveSurveyResultSpy?: SaveSurveyResultSpy;
+  legacyRoot?: boolean;
 };
 
 const makeSut = ({
   loadSurveyResultSpy = new LoadSurveyResultSpy(),
-  saveSurveyResultSpy = new SaveSurveyResultSpy()
+  saveSurveyResultSpy = new SaveSurveyResultSpy(),
+  legacyRoot = true
 }: SutParams = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/', '/surveys/any_id'], initialIndex: 1 });
   const setCurrentAccountMock = jest.fn();
@@ -32,7 +35,7 @@ const makeSut = ({
         <SurveyResult loadSurveyResult={loadSurveyResultSpy} saveSurveyResult={saveSurveyResultSpy} />
       </Router>
     </ApiContext.Provider>,
-    { legacyRoot: true }
+    { legacyRoot }
   );
   return {
     loadSurveyResultSpy,
@@ -216,15 +219,10 @@ describe('SurveyResult Component', () => {
   });
 
   test('should prevent multiple answer click', async () => {
-    const { saveSurveyResultSpy } = makeSut();
+    const { saveSurveyResultSpy } = makeSut({ legacyRoot: false });
     await waitFor(() => screen.getByTestId('question'));
     const answersWrap = screen.queryAllByTestId('answer-wrap');
-    await act(() => {
-      fireEvent.click(answersWrap[1]);
-    });
-    await act(() => {
-      fireEvent.click(answersWrap[1]);
-    });
+    await userEvent.dblClick(answersWrap[1]);
     await waitFor(() => screen.getByTestId('question'));
     expect(saveSurveyResultSpy.callsCount).toBe(1);
   });
