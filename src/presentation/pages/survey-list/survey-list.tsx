@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { LoadSurveyList } from '@/domain/usecases';
 import { Error, Footer, Header } from '@/presentation/components';
-import { SurveyListItem } from './components';
+import { SurveyListItem, surveyListState } from './components';
 import Styles from './survey-list-styles.scss';
 import { useErrorHandler } from '@/presentation/hooks';
+import { useRecoilState } from 'recoil';
 
 type Props = {
   loadSurveyList: LoadSurveyList;
@@ -14,11 +15,7 @@ const SurveyList: React.FC<Props> = ({ loadSurveyList }: Props) => {
     setState(prev => ({ ...prev, error: error.message, reload: false }));
   });
 
-  const [state, setState] = useState({
-    surveys: [] as LoadSurveyList.Model[],
-    error: '',
-    reload: false
-  });
+  const [state, setState] = useRecoilState(surveyListState);
 
   const reload = (): void => setState(prev => ({ surveys: [], error: '', reload: !prev.reload }));
 

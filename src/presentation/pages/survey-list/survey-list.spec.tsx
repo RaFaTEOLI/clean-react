@@ -8,6 +8,7 @@ import { LoadSurveyListSpy, mockAccountModel } from '@/domain/test';
 import { UnexpectedError, AccessDeniedError } from '@/domain/errors';
 import { ApiContext } from '@/presentation/contexts';
 import { AccountModel } from '@/domain/models';
+import { RecoilRoot } from 'recoil';
 
 type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy;
@@ -20,11 +21,13 @@ const makeSut = (legacyRoot = false, loadSurveyListSpy = new LoadSurveyListSpy()
   const setCurrentAccountMock = jest.fn();
   act(() => {
     render(
-      <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
-        <Router navigator={history} location={history.location}>
-          <SurveyList loadSurveyList={loadSurveyListSpy} />
-        </Router>
-      </ApiContext.Provider>,
+      <RecoilRoot>
+        <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
+          <Router navigator={history} location={history.location}>
+            <SurveyList loadSurveyList={loadSurveyListSpy} />
+          </Router>
+        </ApiContext.Provider>
+      </RecoilRoot>,
       { legacyRoot }
     );
   });
