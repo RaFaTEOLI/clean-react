@@ -1,9 +1,11 @@
-import React from 'react';
+import { makeRemoteLoadSurveyResult, makeRemoteSaveSurveyResult } from '@/main/factories/usecases';
 import { SurveyResult } from '@/presentation/pages';
-import { makeRemoteLoadSurveyResult } from '@/main/factories/usecases';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
+import React from 'react';
 
-export const SurveyResultFactory: React.FC = () => {
+export const makeSurveyResult: React.FC = () => {
   const { id } = useParams();
-  return <SurveyResult loadSurveyResult={makeRemoteLoadSurveyResult(id)} />;
+  return (
+    <SurveyResult loadSurveyResult={makeRemoteLoadSurveyResult(id)} saveSurveyResult={makeRemoteSaveSurveyResult(id)} />
+  );
 };
