@@ -6,6 +6,8 @@ import { AccessDeniedError, UnexpectedError } from '@/domain/errors';
 import { AccountModel } from '@/domain/models';
 import userEvent from '@testing-library/user-event';
 import { renderWithHistory } from '@/presentation/test';
+import { LoadSurveyResult } from '@/domain/usecases';
+import { surveyResultState } from './components';
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy;
@@ -18,18 +20,26 @@ type SutParams = {
   loadSurveyResultSpy?: LoadSurveyResultSpy;
   saveSurveyResultSpy?: SaveSurveyResultSpy;
   legacyRoot?: boolean;
+  initialState?: {
+    isLoading: boolean;
+    error: string;
+    surveyResult: LoadSurveyResult.Model;
+    reload: boolean;
+  };
 };
 
 const makeSut = ({
   loadSurveyResultSpy = new LoadSurveyResultSpy(),
   saveSurveyResultSpy = new SaveSurveyResultSpy(),
-  legacyRoot = true
+  legacyRoot = true,
+  initialState = null
 }: SutParams = {}): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/', '/surveys/any_id'], initialIndex: 1 });
   const { setCurrentAccountMock } = renderWithHistory({
     history,
     legacyRoot,
-    Page: () => SurveyResult({ loadSurveyResult: loadSurveyResultSpy, saveSurveyResult: saveSurveyResultSpy })
+    Page: () => SurveyResult({ loadSurveyResult: loadSurveyResultSpy, saveSurveyResult: saveSurveyResultSpy }),
+    states: initialState ? [{ atom: surveyResultState, value: initialState }] : []
   });
   return {
     loadSurveyResultSpy,
@@ -219,5 +229,22 @@ describe('SurveyResult Component', () => {
     await userEvent.dblClick(answersWrap[1]);
     await waitFor(() => screen.getByTestId('question'));
     expect(saveSurveyResultSpy.callsCount).toBe(1);
+  });
+
+  test('should prevent multiple answer click with initial state loading', async () => {
+    const initialState = {
+      isLoading: true,
+      error: '',
+      surveyResult: null,
+      reload: false
+    };
+    const { saveSurveyResultSpy } = makeSut({ initialState });
+    await waitFor(() => screen.getByTestId('question'));
+    const answersWrap = screen.queryAllByTestId('answer-wrap');
+
+    fireEvent.click(answersWrap[1]);
+    await waitFor(() => screen.getByTestId('question'));
+
+    expect(saveSurveyResultSpy.callsCount).toBe(0);
   });
 });

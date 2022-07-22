@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AccountModel } from '@/domain/models';
 import { mockAccountModel } from '@/domain/test';
 import { currentAccountState } from '@/presentation/components';
@@ -5,7 +6,7 @@ import { act } from 'react-dom/test-utils';
 import { Router } from 'react-router-dom';
 import { MemoryHistory } from 'history';
 import { render } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
+import { MutableSnapshot, RecoilRoot, RecoilState } from 'recoil';
 import React from 'react';
 
 type Params = {
@@ -14,6 +15,7 @@ type Params = {
   account?: AccountModel;
   legacyRoot?: boolean;
   useAct?: boolean;
+  states?: Array<{ atom: RecoilState<any>; value: any }>;
 };
 
 type Result = {
@@ -25,17 +27,23 @@ export const renderWithHistory = ({
   useAct = false,
   history,
   legacyRoot = false,
-  account = mockAccountModel()
+  account = mockAccountModel(),
+  states = []
 }: Params): Result => {
   const setCurrentAccountMock = jest.fn();
   const mockedState = {
     setCurrentAccount: setCurrentAccountMock,
     getCurrentAccount: () => account
   };
+
+  const initializeState = ({ set }: MutableSnapshot): void => {
+    [...states, { atom: currentAccountState, value: mockedState }].forEach(state => set(state.atom, state.value));
+  };
+
   if (useAct) {
     act(() => {
       render(
-        <RecoilRoot initializeState={({ set }) => set(currentAccountState, mockedState)}>
+        <RecoilRoot initializeState={initializeState}>
           <Router navigator={history} location={history.location}>
             <Page />
           </Router>
@@ -45,7 +53,7 @@ export const renderWithHistory = ({
     });
   } else {
     render(
-      <RecoilRoot initializeState={({ set }) => set(currentAccountState, mockedState)}>
+      <RecoilRoot initializeState={initializeState}>
         <Router navigator={history} location={history.location}>
           <Page />
         </Router>
