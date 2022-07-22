@@ -214,4 +214,18 @@ describe('SurveyResult Component', () => {
     expect(percents[1]).toHaveTextContent(`${surveyResult.answers[1].percent}%`);
     expect(screen.queryByTestId('loading')).not.toBeInTheDocument();
   });
+
+  test('should prevent multiple answer click', async () => {
+    const { saveSurveyResultSpy } = makeSut();
+    await waitFor(() => screen.getByTestId('question'));
+    const answersWrap = screen.queryAllByTestId('answer-wrap');
+    await act(() => {
+      fireEvent.click(answersWrap[1]);
+    });
+    await act(() => {
+      fireEvent.click(answersWrap[1]);
+    });
+    await waitFor(() => screen.getByTestId('question'));
+    expect(saveSurveyResultSpy.callsCount).toBe(1);
+  });
 });
