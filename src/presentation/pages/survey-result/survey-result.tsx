@@ -23,6 +23,9 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult, saveSurveyResult }: P
   });
 
   const onAnswer = (answer: string): void => {
+    if (state.isLoading) {
+      return;
+    }
     setState(prev => ({ ...prev, isLoading: true }));
     saveSurveyResult
       .save({ answer })
