@@ -7,3 +7,4 @@ public
 webpack.*.js
 dist
 index.js
+jest.config.js

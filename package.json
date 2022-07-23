@@ -8,6 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "lint": "eslint .",
+    "lint:fix": "yarn lint --fix",
     "dev:base": "webpack-dev-server --config webpack.dev.js",
     "dev": "yarn dev:base --open",
     "build": "webpack --config webpack.prod.js",

@@ -22,7 +22,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: yarn eslint 'src/**'
+          command: yarn lint
           name: ESLint
       - run:
           command: yarn test:ci

@@ -1,9 +1,9 @@
 import { SurveyItem } from '@/presentation/pages/survey-list/components';
 import { IconName } from '@/presentation/components';
-import { mockSurveyModel } from '@/domain/test';
+import { mockSurveyModel } from '@/tests/domain/mocks';
 import { fireEvent, screen } from '@testing-library/react';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { renderWithHistory } from '@/presentation/test';
+import { renderWithHistory } from '@/tests/presentation/mocks';
 
 type SutTypes = {
   history: MemoryHistory;
