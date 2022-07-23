@@ -1,5 +1,6 @@
-import { EmailValidation, MinLengthValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators';
 import { makeLoginValidation } from './login-validation-factory';
+import { ValidationComposite } from '@/main/composites';
+import { RequiredFieldValidation, EmailValidation, MinLengthValidation } from '@/validation/validators';
 
 describe('LoginValidationFactory', () => {
   test('should make ValidationComposite with correct validations', () => {
