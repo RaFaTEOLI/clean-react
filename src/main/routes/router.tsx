@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoginFactory, SignUpFactory, SurveyFactory, SurveyResultFactory } from '@/main/factories/pages/';
-import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '../adapters/current-account-adapter';
-import { PrivateRoute, currentAccountState } from '@/presentation/components';
+import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters/current-account-adapter';
+import { PrivateRoute } from '@/main/proxies';
+import { currentAccountState } from '@/presentation/components';
 import { RecoilRoot } from 'recoil';
 
 const Router: React.FC = () => {

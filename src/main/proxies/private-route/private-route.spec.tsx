@@ -1,6 +1,6 @@
 import React from 'react';
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { PrivateRoute } from '@/presentation/components';
+import { PrivateRoute } from '@/main/proxies';
 import { mockAccountModel } from '@/domain/test';
 import { renderWithHistory } from '@/presentation/test';
 

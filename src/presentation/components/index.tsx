@@ -10,5 +10,4 @@ export { default as SubmitButtonBase } from './submit-button/submit-button';
 export { default as Header } from './header/header';
 export { default as Icon, IconName } from './icon/icon';
 export { default as Loading } from './loading/loading';
-export { default as PrivateRoute } from './private-route/private-route';
 export * from './atoms/atoms';
