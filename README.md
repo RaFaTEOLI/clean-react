@@ -5,27 +5,22 @@
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
-# **4Dev React - Enquetes para Programadores**
+# **4Dev React - Surveys for Developers**
 
-[![alt text](./public/course-logo.png "Link para o treinamento")](https://www.udemy.com/course/react-com-mango/?referralCode=552F88858EAE76346C8B)
+[![alt text](./public/course-logo.png "Link to the course")](https://www.udemy.com/course/react-com-mango/?referralCode=552F88858EAE76346C8B)
 
 ---
 
-## [**Link para o curso completo**](https://www.udemy.com/course/react-com-mango/?referralCode=552F88858EAE76346C8B)
+## [**Link to full course**](https://www.udemy.com/course/react-com-mango/?referralCode=552F88858EAE76346C8B)
 
-Essa sistema faz parte do treinamento do professor Rodrigo Manguinho (Mango) na Udemy.
+This application was made during a course by Rodrigo Manguinho at Udemy.
 
-O objetivo do treinamento é mostrar como criar um sistema em ReactJs utilizando os novos Hooks, Recoil, com uma arquitetura bem definida e desacoplada, utilizando TDD (programação orientada a testes) como metodologia de trabalho, Clean Architecture para fazer a distribuição de responsabilidades em camadas, sempre seguindo os princípios do SOLID, DRY, YAGNI, KISS e aplicando Design Patterns para resolver alguns problemas comuns.
+The course's objective is to show how to create a system with React, using the latest technologies, such as Hooks, Recoil and a well defined architecture and also decoupled, using TDD for testing, Clean Architecture to organize the code and distribute the responsability across layers, always following the best design patterns and practices such as SOLID, DRY, YAGNI, KISS.
 <br /><br />
 
-## Contribua com esse Projeto <3
-<a href='https://ko-fi.com/M4M265FO6' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+## [**Link to API Documentation**](http://fordevs.herokuapp.com/api-docs)
 
-<br />
-
-## [**Link para a documentação da API**](http://fordevs.herokuapp.com/api-docs)
-
-> ## Princípios
+> ## Principles
 
 * Single Responsibility Principle (SRP)
 * Open Closed Principle (OCP)
@@ -50,7 +45,7 @@ O objetivo do treinamento é mostrar como criar um sistema em ReactJs utilizando
 * Builder
 * Proxy
 
-> ## Metodologias e Designs
+> ## Methodologies and Designs
 
 * TDD
 * Clean Architecture
@@ -66,7 +61,7 @@ O objetivo do treinamento é mostrar como criar um sistema em ReactJs utilizando
 * Continuous Delivery
 * Continuous Deployment
 
-> ## Bibliotecas e Ferramentas
+> ## Libraries and Tools
 
 * Typescript
 * React
@@ -81,15 +76,15 @@ O objetivo do treinamento é mostrar como criar um sistema em ReactJs utilizando
 * SASS + Animations
 * NPM
 * Travis CI
+* Circle CI
 * Faker
 * Coveralls
 * Husky
 * Lint Staged
 * Eslint
 * Standard Javascript Style
-* React Flip Move
 
-> ## Features do React
+> ## React Features
 
 * Functional Components
 * UseState
@@ -107,15 +102,15 @@ O objetivo do treinamento é mostrar como criar um sistema em ReactJs utilizando
 * Router
 * Memo
 
-> ## Features do Git
+> ## Git Features
 
 * Alias
-* Log Personalizado
+* Custom Log
 * Branch
 * Reset
 * Amend
 * Tag
-* Tag Anotada
+* Annotated Tag
 * Stash
 * Rebase
 * Merge
@@ -126,25 +121,25 @@ O objetivo do treinamento é mostrar como criar um sistema em ReactJs utilizando
 * Shortlog
 * Status
 
-> ## Features do Typescript
+> ## Typescript Features
 
-* POO Avançado
+* Advanced OOP
 * Interface
 * Type Alias
 * Namespace
 * Module
 * Utility Types
-* Modularização de Paths
+* Paths Modularization
 * Build
 * Deploy
 * Generics
 
-> ## Features de Testes
+> ## Test Features
 
-* Testes Unitários
-* Testes de Integração
-* Testes e2e
-* Cobertura de Testes
+* Unit Tests
+* Integration Tests
+* e2e Tests
+* Test Coverage
 * Test Doubles
 * Mocks
 * Stubs
